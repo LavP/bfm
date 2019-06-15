@@ -25,7 +25,7 @@ Vue.component(
 );
 
 new Vue({
-    el: "#googlemap",
+    el: "#mainMain",
     data: {
         place: "",
         center: {
@@ -66,6 +66,15 @@ new Vue({
                 lng: 139.7157437
             },
             infoText:'JRトイレ'
+        },
+        panel:{
+            activePanel:'genre',
+            activeGenre:'',
+            query:{
+                restroom:{
+                    exsample1:'aaaaa'
+                }
+            }
         }
     },
     methods: {

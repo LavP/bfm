@@ -1,0 +1,33 @@
+#mainHeader{
+    display: none;
+}
+
+#mainMain{
+    max-width: 400px;
+    margin: 0 auto;
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    #googlemap{
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+    #panel{
+        width: 100%;
+        height: 30%;
+        background-color: white;
+        position: absolute;
+        bottom: 0;
+        #genre-panel{
+
+        }
+        #query-panel{
+            
+        }
+    }
+}
+
+#mainFooter{
+    display: none;
+}

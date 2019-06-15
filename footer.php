@@ -1,4 +1,4 @@
-<footer>
+<footer id='mainFooter'>
     共通footerコンテンツ
 </footer>
 <!--Need Scripts-->
