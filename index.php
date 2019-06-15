@@ -11,22 +11,6 @@ Template name:マップ実験
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <style>
-        #list > li{
-            cursor: pointer;
-        }
-        #list > .active{
-            background-color: #f4f4f4;
-        }
-        #kasane{
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 20vh;
-            background-color: aqua;
-            opacity: 0.8;
-        }
-    </style>
     <base href="<?php echo get_template_directory_uri() ?>/">
 </head>
 <body>
