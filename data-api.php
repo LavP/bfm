@@ -1,56 +1,99 @@
 <?php
-/*
-Template name:データAPI
-*/
-if(!isset($_GET['type'])) $_GET['type'] = 'restroom';
-if(!isset($_GET['size'])) $_GET['size'] = 5;
-if(!isset($_GET['more'])) $_GET['more'] = 0;
-?>
+if(!isset($_GET['type'])) $_GET['type'] = 'all';
+if(!isset($_GET['query'])) $_GET['query'] = 'init';
+else if($_GET['query'] != 'init'){
+    $queryTmp = explode( ",", $_GET['query'] );
+    $query = array();
+    for($i = 0;$i < 2;$i++){
+        array_push($query,explode( "@", $queryTmp[$i] ));
+    }
+    //var_dump($query);
+}
 
-[
-    <?php
-    if($_GET['type'] == 'all') $type = ['restroom','elevator','food','convenience','amusement'];
-    else $type = explode(',',$_GET['type']);
 
-    $api_query = new WP_Query(
+
+if($_GET['type'] == 'all') $type = ['restroom','elevator','food','convenience','amusement'];
+else $type = explode(',',$_GET['type']);
+
+$returnArray = array();
+
+$api_query = new WP_Query(
     array(
-        'post_type'      => $type,
-        'posts_per_page' => $_GET['size'],
+        'post_type' => $type
     )
-    );
-    ?>
-    <?php if ( $api_query->have_posts() ) : ?>
-    <?php while ( $api_query->have_posts() ) : ?>
-        <?php $api_query->the_post();?>
-        {
-            <?php //共通データ ?>
-            "post_type" : "<?php echo get_post_type();?>"
-            "url" : "<?php echo the_permalink();?>",
-            "name" : "<?php echo get_field('info')['name'];?>",
-            "info" : {
-                "name" : "<?php echo get_field('info')['name'];?>",
-                "dup" : "<?php echo get_field('info')['dup'];?>",
-                "start_time" : "<?php echo get_field('info')['start_time'];?>",
-                "end_time" : "<?php echo get_field('info')['end_time'];?>",
+);
+if ( $api_query->have_posts() ) {
+    while ( $api_query->have_posts() ) {
+        $api_query->the_post();
+        
+        $postType = get_post_type();
+        $arrayTmp = array();
+
+
+        //共通データ（リスト状態）
+        $arrayTmp['post_type'] = $postType;
+        //$arrayTmp['url'] = the_permalink();
+        $arrayTmp['name'] = get_field('info')['name'];
+        $arrayTmp['dup'] = get_field('info')['dup'];
+        $arrayTmp['gps_pos'] = [
+            'lat' => floatval(get_field('gps_pos')['lat']),
+            'lng' => floatval(get_field('gps_pos')['lng']),
+            'dup' => get_field('gps_pos')['dup'],
+        ];
+    
+        //トイレ情報 
+        if($postType == 'restroom' && $query != 'init'){
+            $arrayTmp['metas'] = [
+                'clean' => get_field('metas')['clean'],
+                'tukaiyasusa' => get_field('metas')['tukaiyasusa'],
+            ];
+            $arrayTmp['icon'] = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+        }
+        //コンビニ 
+        if($postType == 'convenience' && $query != 'init'){
+            $arrayTmp['metas'] = [
+                'atm' => get_field('metas')['atm'],
+                'eatin' => get_field('metas')['eatin'],
+                'tanakan' => get_field('metas')['tana'],
+            ];
+            $arrayTmp['icon'] = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+        }
+        //アミューズ 
+        if($postType == 'amusement' && $query != 'init'){
+            $arrayTmp['metas'] = [
+                'genre' => get_field('genre'),
+                'sougouhyouka' => get_field('sougouhyouka'),
+                'cost' => [
+                    'min' => get_field('cost')['min'],
+                    'max' => get_field('cost')['max'],
+                ]
+            ];
+            $arrayTmp['icon'] = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+        }
+        //飲食 
+        if($postType == 'food' && $query != 'init'){
+            $arrayTmp['metas'] = [
+                'genre' => get_field('foods')['genre'],
+                'cost' => [
+                    'min' => get_field('match')['min'],
+                    'max' => get_field('match')['max'],
+                ],
+                'sougouhyouka' => get_field('review')['star'],
+            ];
+            $arrayTmp['icon'] = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+        }
+
+        //queryで指定されたものに応じて弾いたりする
+        if($query != 'init'){
+            if(isset($arrayTmp['metas']['clean'])){
+                if($arrayTmp['metas']['clean'] < $query['clean']) continue;
             }
-            "gps_pos" : {
-                "lat" : "<?php echo get_field('gps_pos')['lat'];?>",
-                "lng" : "<?php echo get_field('gps_pos')['lng'];?>",
-                "dup" : "<?php echo get_field('gps_pos')['dup'];?>",
-            },
-            <?php //トイレ情報 ?>
-            <?php if(get_field('post_type') == 'restroom'):?>
-                <?php if($_GET['more'] == 1):?>
-                "room_breadth" : "<?php echo get_field('metas')['room_breadth'];?>",
-                "fold_the_bar" : "<?php echo get_field('metas')['fold_the_bar'];?>",
-                "side_space" : "<?php echo get_field('metas')['side_space'];?>",
-                "hand_height" : "<?php echo get_field('metas')['hand_height'];?>",
-                "benza_height" : "<?php echo get_field('metas')['benza_height'];?>",
-                "clean" : "<?php echo get_field('metas')['clean'];?>",
-                <?php endif;?>
-            <?php endif;?>
-        },
-    <?php endwhile; ?>
-    <?php endif; ?>
-    <?php wp_reset_postdata(); ?>
-]
+        }
+
+
+        array_push($returnArray,$arrayTmp);
+        
+    }
+}
+wp_reset_postdata();
+echo json_encode($returnArray);
