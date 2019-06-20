@@ -44,29 +44,7 @@ new Vue({
             }
         },
         activePin:'',
-        markers: [
-            {
-                position: {
-                    lat: 35.5644844,
-                    lng: 139.7164114
-                },
-                infoText: '工学院トイレ'
-            },
-            {
-                position: {
-                    lat: 35.5653571,
-                    lng: 139.7144738
-                },
-                infoText: '片柳アリーナトイレ'
-            }
-        ],
-        addPin:{
-            position:{
-                lat: 35.5626028,
-                lng: 139.7157437
-            },
-            infoText:'JRトイレ'
-        },
+        markers: null,
         panel:{
             activePanel:'genre',
             activeGenre:'',
@@ -77,14 +55,34 @@ new Vue({
             }
         }
     },
+    mounted(){
+        this.getAPI('all','init');
+    },
     methods: {
+        getAPI(type,query){
+            if(query == 'init'){
+                query = 'init';
+            }else{
+                query = JSON.stringify(query);
+                console.log(query);
+                query = query.replace(/\{/g,'');
+                query = query.replace(/\}/g,'');
+                query = query.replace(/\:/g,'@');
+                query = query.replace(/\"/g,'');
+                console.log(query);
+            }
+            axios
+            .get('https://kamata-bfm.nextlav.xyz/data-api/?type='+type+'&query='+query)
+            .then(response => (this.markers = response.data))
+        },
         toggleInfoWindow: function (marker, idx) {
-            this.infoWindowPos = marker.position;
-            this.infoContent = marker.infoText;
+            this.infoWindowPos = marker.gps_pos;
+            this.infoContent = marker.name;
 
             //check if its the same marker that was selected if yes toggle
             if (this.currentMidx == idx) {
-                this.infoWinOpen = !this.infoWinOpen;
+                //this.infoWinOpen = !this.infoWinOpen;
+                this.infoWinOpen = true;
             }
             //if different marker set infowindow to open and reset current marker index
             else {
@@ -106,6 +104,10 @@ new Vue({
                 this.addPin.position.lng = null;
                 this.addPin.infoText = '';
             }
+        },
+        openPin : function(uid){
+            this.center;
+            this.toggleInfoWindow();
         }
     }
 });
