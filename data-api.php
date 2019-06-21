@@ -12,14 +12,15 @@ else if($_GET['query'] != 'init'){
 
 
 
-if($_GET['type'] == 'all') $type = ['restroom','elevator','food','convenience','amusement'];
+if($_GET['type'] == 'all') $type = ['restroom','food','convenience','amusement'];
 else $type = explode(',',$_GET['type']);
 
 $returnArray = array();
 
 $api_query = new WP_Query(
     array(
-        'post_type' => $type
+        'post_type' => $type,
+        'posts_per_page' => 50,
     )
 );
 if ( $api_query->have_posts() ) {
@@ -46,8 +47,13 @@ if ( $api_query->have_posts() ) {
             $arrayTmp['metas'] = [
                 'clean' => get_field('metas')['clean'],
                 'tukaiyasusa' => get_field('metas')['tukaiyasusa'],
+                'time' => [
+                    get_field('info')['start_time'],
+                    get_field('info')['end_time']
+                ]
             ];
-            $arrayTmp['icon'] = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+            $arrayTmp['icon'] = 'https://kamata-bfm.nextlav.xyz/wp-content/themes/kamata_bfm/images/pin/toire.png';
+            $arrayTmp['eye'] = get_field('eye');
         }
         //コンビニ 
         if($postType == 'convenience' && $query != 'init'){
@@ -56,7 +62,8 @@ if ( $api_query->have_posts() ) {
                 'eatin' => get_field('metas')['eatin'],
                 'tanakan' => get_field('metas')['tana'],
             ];
-            $arrayTmp['icon'] = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+            $arrayTmp['icon'] = 'https://kamata-bfm.nextlav.xyz/wp-content/themes/kamata_bfm/images/pin/store.png';
+            $arrayTmp['eye'] = get_field('eye');
         }
         //アミューズ 
         if($postType == 'amusement' && $query != 'init'){
@@ -68,19 +75,21 @@ if ( $api_query->have_posts() ) {
                     'max' => get_field('cost')['max'],
                 ]
             ];
-            $arrayTmp['icon'] = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+            $arrayTmp['icon'] = 'https://kamata-bfm.nextlav.xyz/wp-content/themes/kamata_bfm/images/pin/mic.png';
+            $arrayTmp['eye'] = get_field('eye');
         }
         //飲食 
         if($postType == 'food' && $query != 'init'){
             $arrayTmp['metas'] = [
                 'genre' => get_field('foods')['genre'],
                 'cost' => [
-                    'min' => get_field('match')['min'],
-                    'max' => get_field('match')['max'],
+                    'min' => get_field('foods')['match']['min'],
+                    'max' => get_field('foods')['match']['max'],
                 ],
                 'sougouhyouka' => get_field('review')['star'],
             ];
-            $arrayTmp['icon'] = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+            $arrayTmp['icon'] = 'https://kamata-bfm.nextlav.xyz/wp-content/themes/kamata_bfm/images/pin/food.png';
+            $arrayTmp['eye'] = get_field('eye');
         }
 
         //queryで指定されたものに応じて弾いたりする

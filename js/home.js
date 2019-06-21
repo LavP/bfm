@@ -77,7 +77,14 @@ new Vue({
         },
         toggleInfoWindow: function (marker, idx) {
             this.infoWindowPos = marker.gps_pos;
-            this.infoContent = marker.name;
+            this.infoContent = {
+                name:marker.name,
+                minCost:marker.metas.cost.min,
+                maxCost:marker.metas.cost.max,
+                sougouhyouka:marker.metas.sougouhyouka,
+                photo:marker.eye,
+                dup:marker.dup
+            };
 
             //check if its the same marker that was selected if yes toggle
             if (this.currentMidx == idx) {
@@ -89,6 +96,9 @@ new Vue({
                 this.infoWinOpen = true;
                 this.currentMidx = idx;
             }
+        },
+        panelManager:function(){
+
         }
     }
 });
