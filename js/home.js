@@ -89,25 +89,6 @@ new Vue({
                 this.infoWinOpen = true;
                 this.currentMidx = idx;
             }
-        },
-        addPinToMarkers : function() {
-            if(this.addPin.position.lat != '' && this.addPin.position.lng && this.addPin.infoText){
-                //数値化
-                this.addPin.position.lat =  Number(this.addPin.position.lat);
-                this.addPin.position.lng =  Number(this.addPin.position.lng);
-                //参照渡しを回避
-                const tmp = JSON.parse(JSON.stringify(this.addPin));
-                //マーカー配列に追加
-                this.markers.push(tmp);
-                //初期化
-                this.addPin.position.lat = null;
-                this.addPin.position.lng = null;
-                this.addPin.infoText = '';
-            }
-        },
-        openPin : function(uid){
-            this.center;
-            this.toggleInfoWindow();
         }
     }
 });
