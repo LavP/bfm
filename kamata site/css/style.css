@@ -1,0 +1,137 @@
+@charset "utf-8";
+
+/*------------------------commom-------------------------*/
+
+body{
+	background: #FFFFFF;
+	color: #000000;
+	margin: 0;
+	padding: 0;
+}
+ul{
+	list-style: none;
+}
+
+ul li{
+	display: inline-block;
+}
+
+/*----------------------------header---------------------------*/
+
+header{
+	width: 100%;
+}
+
+header img{
+	width: 98%;
+	height: 400px;
+	margin-left: 2%;
+	position: relative;
+	display: block;
+}
+
+header .title{
+	position: absolute;
+	left: 50px;
+	top: 370px;
+}
+
+/*----------------------------main---------------------------*/
+
+main{
+	width: 90%;
+	margin: 20px auto 0;
+}
+
+main section {
+	margin-bottom: 50px;
+	width: 100%;
+}
+
+main section h1{
+	font-size: 36px;
+}
+
+main section .sub{
+	font-size: 14px;
+}
+
+main section .cost{
+	margin-left: 10px;
+}
+
+main section .point{
+	margin-left: 20px;
+}
+
+main section h2{
+	font-size: 26px;
+	margin: 20px 0;
+}
+
+main section .shop_info li{
+	width: calc(90% / 6);
+	height: 60px;
+	justify-content: space-between;
+}
+
+main section .shop_info_p{
+	width: 100%;
+	font-size: 16px;
+	margin: 10px 0;
+}
+
+main section .shop{
+	text-align: center;
+}
+
+main section .shop li{
+	width: 150px;
+}
+
+main section hr{
+	color: #000000;
+}
+
+main section table{
+	width: 100%;
+}
+
+main section table tr{
+	height: 30px;
+}
+
+main section table tr .table_left{
+	width: 40%;
+}
+
+main section table tr .table_right{
+	width: 60%;
+}
+
+
+
+
+/*----------------------------clearfix---------------------------*/
+
+.clearfix {
+    display: inline-block;
+    min-height: 1%;
+}
+/* Hides from IE-mac \*/
+* html .clearfix {
+	height: 1%;
+}
+.clearfix {
+	display: block;
+}
+/* End hide from IE-Mac */
+
+.clearfix:after {
+	clear: both;
+	display: block;
+	height: 0;
+	line-height: 0;
+	content: "";
+	visibility: hidden;
+}
