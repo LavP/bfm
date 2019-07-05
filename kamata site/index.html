@@ -4,115 +4,121 @@
 <meta charset="utf-8">
 <title>beta</title>
 <meta name="viewport" content="width=device-width">
-
+<!--
+	https://www.conifer.jp/csstest/css-input-bubbles.html
+	https://framework7.io/docs/range-slider.html
+-->
 <link rel="stylesheet" href="css/reset.css">
 <link rel="stylesheet" href="css/style.css">
+<style>
 
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<script type="text/javascript">
-</script>
+</style>
+<!--<script type="text/javascript" src="js/jquery.min.js"></script>-->
+<script type="text/javascript" src="js/vue.js"></script>
+
 
 </head>
 
 <body>
-<!-------------------------------header&nav------------------------------>
-<header>
-	<ul class="top">
-		<li class="back">←</li>
-		<li class="title_name">アミューズメント</li>
-	</ul>
-</header>
 <!-------------------------------main------------------------------>
 <main>
-	<section>
-		<img src="images/x1.png" alt="404" class="shop_icon">
-		<h2>バッティングセンター</h2>
-		<h1>ATHLECITTA'蒲田</h1>
-		<p class="cost">￥600〜￥2000</p>
-		<p class="comment">総合評価</p>
-		<p class="point">★★★☆☆</p>
-		<p class="info">思いっきり楽しめて、安らげて、さらにフレッシュ！ 充実のアミューズメント&amp;リラクゼーション ボーリングやカラオケ、バッティングなど色々！</p>
-		<a href="" target="_blank">公式サイト</a>
+	<section class="section_fix">
+		<div class="section_zindex">
+			<img src="images/x1.png" alt="404" class="shop_icon">
+			<h2>バッティングセンター</h2>
+			<h1>ATHLECITTA'蒲田</h1>
+			<p class="cost">￥600〜￥2000</p>
+			<p class="comment">総合評価</p>
+			<p class="point">★★★☆☆</p>
+			<ul class="close">
+				<li>とじる</li>
+				<li>もっとみる</li>
+			</ul>
+		</div>
 	</section>
-	<section>
+	<section id="detail">
 		<ul class="option">
-			<li class="free">バリアフリー</li>
-			<li class="gallery">ギャラリー</li>
+			<li class="facility_info" v-on:click='select = "facility_info_content"'>施設情報</li>
+			<li class="gallery" v-on:click='select = "gallery_content"'>写真</li>
 		</ul>
+		<div class="facility_info_content" v-if='select == "facility_info_content"'>
+			<form>
+				<dl class="facility_info_dl">
+					<dt>ひとこと</dt>
+					<dd>思いっきり楽しめて、安らげて、さらにフレッシュ！充実のアミューズメント&amp;リラクゼーションボーリングやカラオケ、バッティングなど色々！</dd>
+					<hr>
+					<dt>店の広さ</dt>
+					<dd style="margin-top: 10px;"><input type="range" name="space" min="0" max="4" step="1" value="2" list="tickmarks" disabled></dd>
+					<datalist id="tickmarks">
+						<option value="0" label="0">
+						<option value="1">
+						<option value="2">
+						<option value="3"label="3">
+						<option value="4">
+					  </datalist>
+					<hr>
+					<dt>注文形式</dt>
+					<dd>
+						<input type="radio" name="orderstyle" value="1">
+						<input type="radio" name="orderstyle" value="2">
+					</dd>
+					<hr>
+					<dt>支払形式</dt>
+					<dd>
+						<input type="checkbox" name="payment" value="0">
+						<input type="checkbox" name="payment" value="1">
+					</dd>
+					<hr>
+					<dt>店内段差</dt>
+					<dd><input type="range" name="step" min="0" max="5" step="1" value="3"></dd>
+					<hr>
+					<dt>店員さん</dt>
+					<dd>
+						<input type="radio" name="smile" value="0">
+						<input type="radio" name="smile" value="1">
+						<input type="radio" name="smile" value="2">
+					</dd>
+					<hr>
+					<dt>道具</dt>
+					<dd>
+						<input type="checkbox" name="tool" value="0">
+						<input type="checkbox" name="tool" value="1">
+						<input type="checkbox" name="tool" value="2">
+					</dd>
+					<hr>
+					<dt>椅子</dt>
+					<dd>
+						<input type="radio" name="chair" value="0">
+						<input type="radio" name="chair" value="1">
+					</dd>
+					<hr>
+					<dt>公式HP</dt>
+					<dd><a href="#" target="_blank">#</a></dd>
+				</dl>
+			</form>
+			
+		</div>
+		<div class="gallery_content" v-if='select == "gallery_content"'>
+			<ul class="gallery_photo_ul">
+				<li><img src="images/x2.png" alt="404" class="gallery_photo"><p class="photo_info">入り口の段差</p></li>
+				<li><img src="images/x2.png" alt="404" class="gallery_photo"><p class="photo_info">入り口の段差</p></li>
+				<li><img src="images/x2.png" alt="404" class="gallery_photo"><p class="photo_info">入り口の段差</p></li>
+				<li><img src="images/x2.png" alt="404" class="gallery_photo"><p class="photo_info">入り口の段差</p></li>
+				<li><img src="images/x2.png" alt="404" class="gallery_photo"><p class="photo_info">入り口の段差</p></li>
+				<li><img src="images/x2.png" alt="404" class="gallery_photo"><p class="photo_info">入り口の段差</p></li>
+			</ul>
+		</div>
 		
 	</section>
-		
-		
-		<!--
-		<p class="sub"><span class="cost">￥9999~￥124580</span><span class="point">総合評価。。。。</span></p>
-		<h2>店舗情報</h2>
-		<ul class="shop_info">
-			<li>1</li>
-			<li>2</li>
-			<li>3</li>
-			<li>4</li>
-			<li>5</li>
-			<li>6</li>
-		</ul>
-		<p class="shop_info_p">texttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttext</p>
-		<h2>オススメポイント</h2>
-		<p class="shop_info_p">texttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttext</p>
-		<h2>公式サイト</h2>
-		<a href="" target="_blank">text</a>
-		-->
-	
-	<!--
-	<section>
-		<ul class="shop">
-			<li>バリアフリー</li>
-			<li>ポイント</li>
-		</ul>
-		<hr>
-		<table class="shop_table">
-			<tr>
-				<td class="table_left">店の広さ</td>
-				<td class="table_right">b</td>
-			</tr>
-			<tr>
-				<td class="table_left">注文形式</td>
-				<td class="table_right">b</td>
-			</tr>
-			<tr>
-				<td class="table_left">エレベーター</td>
-				<td class="table_right">b</td>
-			</tr>
-			<tr>
-				<td class="table_left">ピーク時の混雑度</td>
-				<td class="table_right">b</td>
-			</tr>
-			<tr>
-				<td class="table_left">店員さんの接客</td>
-				<td class="table_right">b</td>
-			</tr>
-		</table>
-	</section>
-	<section>
-		<ul class="shop">
-			<li>バリアフリー</li>
-			<li>ポイント</li>
-		</ul>
-		<hr>
-		<ul>
-			<li>a</li>
-			<li>a</li>
-			<li>a</li>
-			<li>a</li>
-			<li>a</li>
-			<li>a</li>
-			<li>a</li>
-		</ul>
-	</section>
-	<section>
-		<p>画像をタップしたら↓</p>
-		<img src="" alt="404">
-	</section>
-	-->
-</main>
 
+</main>
+<script>
+var option = new Vue({
+	el:'#detail',
+	data:{
+	select:'facility_info_content'
+	}
+})
+</script>
 </body>
 </html>
