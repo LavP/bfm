@@ -8,112 +8,153 @@
     width: 100%;
     height: 100vh;
     position: relative;
-    #googlemap{
-        display: block;
-        width: 100%;
-        height: 100%;
-        .pinPopup{
+}
+
+#googlemap{
+    display: block;
+    width: 100%;
+    height: 100%;
+    .pinPopup{
+        text-align: center;
+        padding: 1em;
+        >*:not(:last-child){
+            margin-bottom: 0.5em;
+        }
+        img{
+            display: inline-block;
+            width: 30%;
+            height: auto;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 50%;
+            background-color: aqua;
+            color: white;
+            overflow: hidden;
+        }
+        h3{
+            font-weight: bold;
+            font-size: 1.5em;
+        }
+        .cost{
+
+        }
+        .sougouhyouka{
+
+        }
+        .dup{
+            text-align: justify;
+            line-height: 1.8;
+        }
+    }
+}
+
+#global-setting{
+    position: absolute;
+    top: 1em;
+    right: 1em;
+}
+#global-setting-panel{
+    width:100%;
+    //height:30%;
+    background-color:white;
+    position:absolute;
+    bottom:0;
+    border-radius:10px 10px 0 0;
+    padding:1.3em;
+    -webkit-box-sizing:border-box;
+    box-sizing:border-box;
+    box-shadow: gray 0 0 5px;
+    overflow: hidden;
+    header {
+        display: grid;
+        padding-bottom: 0.8em;
+        font-size: 2em;
+        grid-template: 
+            "back title check" auto
+            /10% 1fr 10%;
+        h2{
+            grid-area: title;
             text-align: center;
-            padding: 1em;
-            >*:not(:last-child){
-                margin-bottom: 0.5em;
-            }
-            img{
-                display: inline-block;
-                width: 30%;
-                height: auto;
-                object-fit: cover;
-                object-position: center;
-                border-radius: 50%;
-                background-color: aqua;
-                color: white;
-                overflow: hidden;
-            }
-            h3{
-                font-weight: bold;
-                font-size: 1.5em;
-            }
-            .cost{
+        }
+        button{
+            border: none;
+            background: none;
+            text-align: center;
+        }
+        .back{
+            grid-area: back;
+        }
+        .check{
+            grid-area: check;
+        }
+    }
+}
 
+#searchPanel{
+    width:100%;
+    //height:30%;
+    background-color:white;
+    position:absolute;
+    bottom:0;
+    border-radius:10px 10px 0 0;
+    padding:1.3em;
+    -webkit-box-sizing:border-box;
+    box-sizing:border-box;
+    box-shadow: gray 0 0 5px;
+    overflow: hidden;
+    
+    >section{
+        transition: height 0.5s ease-in-out;
+        header {
+            display: grid;
+            padding-bottom: 0.8em;
+            font-size: 2em;
+            grid-template: 
+                "back title check" auto
+                /10% 1fr 10%;
+            h2{
+                grid-area: title;
+                text-align: center;
             }
-            .sougouhyouka{
-
+            button{
+                border: none;
+                background: none;
+                text-align: center;
             }
-            .dup{
-                text-align: justify;
-                line-height: 1.8;
+            .back{
+                grid-area: back;
+            }
+            .check{
+                grid-area: check;
             }
         }
     }
-    #searchPanel{
-        width:100%;
-        //height:30%;
-        background-color:white;
-        position:absolute;
-        bottom:0;
-        border-radius:10px 10px 0 0;
-        padding:1.3em;
-        -webkit-box-sizing:border-box;
-        box-sizing:border-box;
-        box-shadow: gray 0 0 5px;
-        overflow: hidden;
-        
-        >section{
-            transition: height 0.5s ease-in-out;
-            header {
-                display: grid;
-                padding-bottom: 0.8em;
-                font-size: 2em;
-                grid-template: 
-                    "back title check" auto
-                    /10% 1fr 10%;
-                h2{
-                    grid-area: title;
-                    text-align: center;
-                }
-                button{
+    #genre-panel{
+        ul {
+            display: grid;
+            /*! flex-wrap: wrap; */
+            grid-gap: 2em;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: auto auto;
+            li {
+                button {
+                    width: 100%;
                     border: none;
                     background: none;
-                    text-align: center;
-                }
-                .back{
-                    grid-area: back;
-                }
-                .check{
-                    grid-area: check;
-                }
-            }
-        }
-        #genre-panel{
-            ul {
-                display: grid;
-                /*! flex-wrap: wrap; */
-                grid-gap: 2em;
-                grid-template-columns: 1fr 1fr 1fr;
-                grid-template-rows: auto auto;
-                li {
-                    button {
-                        width: 100%;
-                        border: none;
-                        background: none;
-                        p{
-                            margin-top: 1rem;
-                            font-size: 1em;
-                        }
+                    p{
+                        margin-top: 1rem;
+                        font-size: 1em;
                     }
                 }
             }
         }
-        #query-panel{
-            p{
-                text-align: center;
-            }
-        }
-        #list-panel{
-            ul{
-                height: 30vh;
-                overflow-y: scroll;
-                li{
+    }
+    #list-panel{
+        ul{
+            height: 30vh;
+            overflow-y: scroll;
+            li{
+                >div{
                     font-size: 0.8em;
                     line-height: 1.5;
                     padding: 1em 0;
@@ -166,8 +207,13 @@
                         object-fit: contain;
                         object-position: center;
                     }
-                }
+                    }
             }
+        }
+    }
+    #query-panel{
+        p{
+            text-align: center;
         }
     }
 }

@@ -103,6 +103,9 @@ new Vue({
         isLabel:function(value){
             if(value == 0) return 'なし';
             else return 'あり';
+        },
+        saveGlobalSetting:function(){
+            
         }
     }
 });

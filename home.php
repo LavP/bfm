@@ -48,8 +48,35 @@ get_header();
         </google-map>
     </section>
 
+    <!--グローバル設定ボタン-->
+    <button
+    id='global-setting'
+    v-show='panel.activePanel == "genre"'
+    @click='panel.activePanel = "global-setting"'
+    >⚙</button>
+
+    <!--グローバル設定パネル-->
+    <section
+    id="global-setting-panel"
+    v-show='panel.activePanel == "global-setting"'>
+        <header>
+            <button
+            class="back"
+            @click='panel.activePanel = "genre"'>⬅</button>
+            <h2>車椅子設定</h2>
+            <button
+            class="diside"
+            @click='[
+                panel.activePanel = "genre",
+                saveGlobalSetting()
+            ]'>✅</button>
+        </header>
+    </section>
+
     <!--メインパネル-->
-    <section id="searchPanel">
+    <section
+    id="searchPanel"
+    v-show='panel.activePanel != "global-setting"'>
         <!--ジャンル選択パネル-->
         <section id="genre-panel" v-show='panel.activePanel == "genre"'>
             <header>
@@ -94,17 +121,125 @@ get_header();
             </ul>
         </section>
 
+        <!--リストパネル-->
+        <section id="list-panel" v-show='panel.activePanel == "list"'>
+            <header>
+                <button
+                class="back"
+                @click='panel.activePanel = "genre"'>⬅</button>
+                <h2>リスト</h2>
+                <button
+                class="setting"
+                @click='panel.activePanel = "setting"'
+                v-show='panel.activeGenre != "all" && panel.activeGenre != "amusement"'>⚙</button>
+            </header>
+            <ul>
+                <li
+                v-for='pin in markers'
+                @click='[
+                    center = pin.gps_pos,
+                    toggleInfoWindow(pin),
+                    activePin = pin.name
+                ]'>
+                    <!--飲食店のリスト項目-->
+                    <div v-if='pin.post_type == "food"' class='food'>
+                        <div class="header">
+                            <p class="genre">{{pin.metas.genre}}</p>
+                            <h3>{{pin.name}}</h3>
+                        </div>
+                        <dl class="metas">
+                            <dt class="sougouhyouka">おいしさ</dt>
+                            <dd class="sougouhyouka">
+                                <span v-for='n in pin.metas.hyouka'>★</span>
+                            </dd>
+                            <dd class="cost none">値段</dd>
+                            <dt class="cost">
+                                {{pin.metas.cost.min}} 〜 {{pin.metas.cost.max}}円
+                            </dt>
+                        </dl>
+                        <img :src="pin.eye" :alt="'写真'+pin.name" class="photo">
+                    </div>
+                    <!--アミューズメントのリスト項目-->
+                    <div v-if='pin.post_type == "amusement"' class='amusement'>
+                        <div class="header">
+                            <p class="genre">{{pin.metas.genre}}</p>
+                            <h3>{{pin.name}}</h3>
+                        </div>
+                        <dl class="metas">
+                        <dt class="sougouhyouka">たのしさ</dt>
+                            <dd class="sougouhyouka">
+                                <span v-for='n in pin.metas.hyouka'>★</span>
+                            </dd>
+                            <dd class="cost none">値段</dd>
+                            <dt class="cost">
+                                {{pin.metas.cost.min}} 〜 {{pin.metas.cost.max}}円
+                            </dt>
+                        </dl>
+                        <img :src="pin.eye" :alt="'写真'+pin.name" class="photo">
+                    </div>
+                    <!--トイレのリスト項目-->
+                    <div v-if='pin.post_type == "restroom"' class='restroom'>
+                        <div class="header">
+                            <h3>{{pin.name}}</h3>
+                        </div>
+                        <dl class="metas">
+                            <dt>使える時間</dt>
+                            <dd>
+                                <time>{{pin.metas.time.start}} 〜 {{pin.metas.time.end}}</time>
+                            </dd>
+                        </dl>
+                        <img :src="pin.eye" :alt="'写真'+pin.name" class="photo">
+                    </div>
+                    <!--コンビニのリスト項目-->
+                    <div v-if='pin.post_type == "convenience"' class='convenience'>
+                        <div class="header">
+                            <p class="genre">{{pin.metas.brand.label}}</p>
+                            <h3>{{pin.name}}</h3>
+                        </div>
+                        <dl class="metas">
+                            <dt><img src="" alt="ATM"></dt>
+                            <dd>ATM {{isLabel(pin.metas.atm)}}</dd>
+                            <dt><img src="" alt="イートイン"></dt>
+                            <dd>イートイン {{isLabel(pin.metas.eatin)}}</dd>
+                        </dl>
+                        <img :src="pin.eye" :alt="'写真'+pin.name" class="photo">
+                    </div>
+                </li>
+            </ul>
+        </section>
+
         <!--条件指定パネル-->
         <section id="query-panel" v-show='panel.activePanel == "setting"'>
             <header>
-                <button class="back" @click='panel.activePanel = "list"'>⬅</button>
+                <button
+                class="back"
+                @click='panel.activePanel = "list"'>⬅</button>
                 <h2>条件設定</h2>
-                <button class="check" @click='[panel.activePanel = "list",getAPI(panel.activeGenre,panel.query[panel.activeGenre])]'>✔</button>
+                <button
+                class="check"
+                @click='[
+                    panel.activePanel = "list",
+                    getAPI(panel.activeGenre,panel.query[panel.activeGenre])
+                ]'>✅</button>
             </header>
             <!--ジャンル：トイレ-->
             <section class="restroom" v-show='panel.activeGenre == "restroom"'>
                 <h3 class="none">トイレの検索条件</h3>
-                <p>トイレ未定義</p>
+                <dl>
+                    <dt>道具</dt>
+                    <dd>
+                        <label for="tool">
+                            <input type="checkbox" name="" id="">
+                            <span>フォーク</span>
+                            <input type="checkbox" name="" id="">
+                            <span>スプーン</span>
+                        </label>
+                        <label for="tool">
+                            <input type="checkbox" name="" id="">
+                            <span>スプーン</span>
+                        </label>
+                    </dd>
+                </dl>
             </section>
             <!--ジャンル：飲食-->
             <section class="food" v-show='panel.activeGenre == "food"'>
@@ -122,105 +257,6 @@ get_header();
                 <p>コンビニ未定義</p>
             </section>
         </section>
-
-        <!--リストパネル-->
-        <section id="list-panel" v-show='panel.activePanel == "list"'>
-            <header>
-                <button class="back" @click='panel.activePanel = "genre"'>⬅</button>
-                <h2>リスト</h2>
-                <button class="setting" @click='panel.activePanel = "setting"'>⚙</button>
-            </header>
-            <ul>
-                <!--飲食店のリスト項目-->
-                <li
-                v-if='panel.activeGenre == "food"'
-                v-for='pin in markers'
-                :class='{ activePin : activePin == pin.name }'
-                class="food"
-                @click='[center = pin.gps_pos,toggleInfoWindow(pin),activePin = pin.name]'>
-                    <div class="header">
-                        <p class="genre">{{pin.metas.genre}}</p>
-                        <h3>{{pin.name}}</h3>
-                    </div>
-                    <dl class="metas">
-                        <dt class="sougouhyouka">おいしさ</dt>
-                        <dd class="sougouhyouka">
-                            <span v-for='n in pin.metas.hyouka'>★</span>
-                        </dd>
-                        <dd class="cost none">値段</dd>
-                        <dt class="cost">
-                            {{pin.metas.cost.min}} 〜 {{pin.metas.cost.max}}円
-                        </dt>
-                    </dl>
-                    <img :src="pin.eye" :alt="'写真'+pin.name" class="photo">
-                </li>
-                <!--アミューズメントのリスト項目-->
-                <li
-                v-if='panel.activeGenre == "amusement"'
-                v-for='pin in markers'
-                :class='{ activePin : activePin == pin.name }'
-                class="amusement"
-                @click='[center = pin.gps_pos,toggleInfoWindow(pin),activePin = pin.name]'>
-                    <div class="header">
-                        <p class="genre">{{pin.metas.genre}}</p>
-                        <h3>{{pin.name}}</h3>
-                    </div>
-                    <dl class="metas">
-                    <dt class="sougouhyouka">たのしさ</dt>
-                        <dd class="sougouhyouka">
-                            <span v-for='n in pin.metas.hyouka'>★</span>
-                        </dd>
-                        <dd class="cost none">値段</dd>
-                        <dt class="cost">
-                            {{pin.metas.cost.min}} 〜 {{pin.metas.cost.max}}円
-                        </dt>
-                    </dl>
-                    <img :src="pin.eye" :alt="'写真'+pin.name" class="photo">
-                </li>
-                <!--トイレのリスト項目-->
-                <li
-                v-if='panel.activeGenre == "restroom"'
-                v-for='pin in markers'
-                :class='{ activePin : activePin == pin.name }'
-                class="restroom"
-                @click='[center = pin.gps_pos,toggleInfoWindow(pin),activePin = pin.name]'>
-                    <div class="header">
-                        <h3>{{pin.name}}</h3>
-                    </div>
-                    <dl class="metas">
-                        <dt>使える時間</dt>
-                        <dd>
-                            <time>{{pin.metas.time.start}} 〜 {{pin.metas.time.end}}</time>
-                        </dd>
-                    </dl>
-                    <img :src="pin.eye" :alt="'写真'+pin.name" class="photo">
-                </li>
-                <!--コンビニのリスト項目-->
-                <li
-                v-if='panel.activeGenre == "convenience"'
-                v-for='pin in markers'
-                :class='{ activePin : activePin == pin.name }'
-                class="convenience"
-                @click='[center = pin.gps_pos,toggleInfoWindow(pin),activePin = pin.name]'>
-                    <div class="header">
-                        <p class="genre">{{pin.metas.brand.label}}</p>
-                        <h3>{{pin.name}}</h3>
-                    </div>
-                    <dl class="metas">
-                        <dt><img src="" alt="ATM"></dt>
-                        <dd>ATM {{isLabel(pin.metas.atm)}}</dd>
-                        <dt><img src="" alt="イートイン"></dt>
-                        <dd>イートイン {{isLabel(pin.metas.eatin)}}</dd>
-                    </dl>
-                    <img :src="pin.eye" :alt="'写真'+pin.name" class="photo">
-                </li>
-            </ul>
-        </section>
-    </section>
-
-    <!--グローバル設定パネル-->
-    <section id="globalPanel">
-    
     </section>
 </main>
 
