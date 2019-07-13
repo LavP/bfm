@@ -42,6 +42,7 @@ if($_GET['type'] == 'all') $type = ['restroom','food','convenience','amusement']
 else $type = explode(',',$_GET['type']);
 
 $returnArray = array();
+$templateURI = get_template_directory_uri();
 
 $api_query = new WP_Query(
     array(
@@ -106,6 +107,7 @@ if ( $api_query->have_posts() ) {
         $arrayTmp['eye'] = get_field('eye');
         /*==========飲食店データ格納（リスト状態）===============*/
         if($arrayTmp['post_type'] == 'food'){
+            $arrayTmp['icon'] = $templateURI.'/images/pin/food.png';
             $arrayTmp['metas'] = [
                 'genre' => get_field('foods')['genre'],
                 'hyouka' => get_field('foods')['oisii'],
@@ -114,6 +116,7 @@ if ( $api_query->have_posts() ) {
         }
         /*==========コンビニデータ格納（リスト状態）===============*/
         if($arrayTmp['post_type'] == 'convenience'){
+            $arrayTmp['icon'] = $templateURI.'/images/pin/store.png';
             $arrayTmp['metas'] = [
                 'brand' => get_field('metas')['type'],
                 'atm' => get_field('metas')['atm'][0],
@@ -122,6 +125,7 @@ if ( $api_query->have_posts() ) {
         }
         /*==========トイレデータ格納（リスト状態）===============*/
         if($arrayTmp['post_type'] == 'restroom'){
+            $arrayTmp['icon'] = $templateURI.'/images/pin/toire.png';
             $arrayTmp['metas'] = [
                 'time' => [
                     'start' => get_field('info')['start_time'],
@@ -131,6 +135,7 @@ if ( $api_query->have_posts() ) {
         }
         /*==========アミューズメントデータ格納（リスト状態）===============*/
         if($arrayTmp['post_type'] == 'amusement'){
+            $arrayTmp['icon'] = $templateURI.'/images/pin/mic.png';
             $arrayTmp['metas'] = [
                 'genre' => get_field('genre')[0],
                 'hyouka' => get_field('sougouhyouka'),

@@ -99,6 +99,10 @@ new Vue({
         },
         panelManager:function(){
 
+        },
+        isLabel:function(value){
+            if(value == 0) return 'なし';
+            else return 'あり';
         }
     }
 });

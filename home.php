@@ -48,7 +48,8 @@ get_header();
         </google-map>
     </section>
 
-    <section id="panel">
+    <!--メインパネル-->
+    <section id="searchPanel">
         <!--ジャンル選択パネル-->
         <section id="genre-panel" v-show='panel.activePanel == "genre"'>
             <header>
@@ -57,40 +58,47 @@ get_header();
             <ul>
                 <li>
                     <button
-                    @click='[panel.activeGenre = "restroom",panel.activePanel = "query",getAPI("restroom","init")]'>
+                    @click='[panel.activeGenre = "restroom",panel.activePanel = "list",getAPI("restroom","init")]'>
                         <img src="images/pin/toire-C.svg" alt="">
                         <p>トイレ</p>
                     </button>
                 </li>
                 <li>
                     <button
-                    @click='[panel.activeGenre = "food",panel.activePanel = "query",getAPI("food","init")]'>
+                    @click='[panel.activeGenre = "food",panel.activePanel = "list",getAPI("food","init")]'>
                         <img src="images/pin/food-C.svg" alt="">
                         <p>飲食店</p>
                     </button>
                 </li>
                 <li>
                     <button
-                    @click='[panel.activeGenre = "convenience",panel.activePanel = "query",getAPI("convenience","init")]'>
+                    @click='[panel.activeGenre = "convenience",panel.activePanel = "list",getAPI("convenience","init")]'>
                         <img src="images/pin/store-C.svg" alt="">
                         <p>コンビニ</p>
                     </button>
                 </li>
                 <li>
                     <button
-                    @click='[panel.activeGenre = "amusement",panel.activePanel = "query",getAPI("amusement","init")]'>
+                    @click='[panel.activeGenre = "amusement",panel.activePanel = "list",getAPI("amusement","init")]'>
                         <img src="images/pin/mic-C.svg" alt="">
                         <p>アミューズメント</p>
+                    </button>
+                </li>
+                <li>
+                    <button
+                    @click='[panel.activeGenre = "all",panel.activePanel = "list",getAPI("all","init")]'>
+                        <img src="images/pin/mic-C.svg" alt="">
+                        <p>すべて</p>
                     </button>
                 </li>
             </ul>
         </section>
 
         <!--条件指定パネル-->
-        <section id="query-panel" v-show='panel.activePanel == "query"'>
+        <section id="query-panel" v-show='panel.activePanel == "setting"'>
             <header>
-                <button class="back" @click='[panel.activePanel = "genre",getAPI("all","init")]'>←</button>
-                <h2>条件</h2>
+                <button class="back" @click='panel.activePanel = "list"'>⬅</button>
+                <h2>条件設定</h2>
                 <button class="check" @click='[panel.activePanel = "list",getAPI(panel.activeGenre,panel.query[panel.activeGenre])]'>✔</button>
             </header>
             <!--ジャンル：トイレ-->
@@ -118,24 +126,50 @@ get_header();
         <!--リストパネル-->
         <section id="list-panel" v-show='panel.activePanel == "list"'>
             <header>
-                <button class="back" @click='panel.activePanel = "query"'>←</button>
-                <h2>検索結果</h2>
+                <button class="back" @click='panel.activePanel = "genre"'>⬅</button>
+                <h2>リスト</h2>
+                <button class="setting" @click='panel.activePanel = "setting"'>⚙</button>
             </header>
             <ul>
-                <!--アミューズメントと飲食店のリスト項目-->
+                <!--飲食店のリスト項目-->
                 <li
-                v-if='panel.activeGenre == "food" || panel.activeGenre == "amusement"'
+                v-if='panel.activeGenre == "food"'
                 v-for='pin in markers'
                 :class='{ activePin : activePin == pin.name }'
-                class="amusement food"
+                class="food"
                 @click='[center = pin.gps_pos,toggleInfoWindow(pin),activePin = pin.name]'>
                     <div class="header">
                         <p class="genre">{{pin.metas.genre}}</p>
                         <h3>{{pin.name}}</h3>
                     </div>
                     <dl class="metas">
-                        <dt class="sougouhyouka">総合評価</dt>
-                        <dd class="sougouhyouka">{{pin.metas.sougouhyouka}}</dd>
+                        <dt class="sougouhyouka">おいしさ</dt>
+                        <dd class="sougouhyouka">
+                            <span v-for='n in pin.metas.hyouka'>★</span>
+                        </dd>
+                        <dd class="cost none">値段</dd>
+                        <dt class="cost">
+                            {{pin.metas.cost.min}} 〜 {{pin.metas.cost.max}}円
+                        </dt>
+                    </dl>
+                    <img :src="pin.eye" :alt="'写真'+pin.name" class="photo">
+                </li>
+                <!--アミューズメントのリスト項目-->
+                <li
+                v-if='panel.activeGenre == "amusement"'
+                v-for='pin in markers'
+                :class='{ activePin : activePin == pin.name }'
+                class="amusement"
+                @click='[center = pin.gps_pos,toggleInfoWindow(pin),activePin = pin.name]'>
+                    <div class="header">
+                        <p class="genre">{{pin.metas.genre}}</p>
+                        <h3>{{pin.name}}</h3>
+                    </div>
+                    <dl class="metas">
+                    <dt class="sougouhyouka">たのしさ</dt>
+                        <dd class="sougouhyouka">
+                            <span v-for='n in pin.metas.hyouka'>★</span>
+                        </dd>
                         <dd class="cost none">値段</dd>
                         <dt class="cost">
                             {{pin.metas.cost.min}} 〜 {{pin.metas.cost.max}}円
@@ -154,41 +188,39 @@ get_header();
                         <h3>{{pin.name}}</h3>
                     </div>
                     <dl class="metas">
-                        <dt>使いやすさ</dt>
-                        <dd>{{pin.metas.tukaiyasusa}}</dd>
-                        <dt>美しさ</dt>
-                        <dd>{{pin.metas.clean}}</dd>
-                        <dt class='none'>使える時間</dt>
+                        <dt>使える時間</dt>
                         <dd>
-                            <time>{{pin.metas.time[0]}}〜{{pin.metas.time[1]}}</time>
+                            <time>{{pin.metas.time.start}} 〜 {{pin.metas.time.end}}</time>
                         </dd>
                     </dl>
                     <img :src="pin.eye" :alt="'写真'+pin.name" class="photo">
                 </li>
                 <!--コンビニのリスト項目-->
                 <li
-                v-if='panel.activeGenre == "restroom"'
+                v-if='panel.activeGenre == "convenience"'
                 v-for='pin in markers'
                 :class='{ activePin : activePin == pin.name }'
-                class="restroom"
+                class="convenience"
                 @click='[center = pin.gps_pos,toggleInfoWindow(pin),activePin = pin.name]'>
                     <div class="header">
+                        <p class="genre">{{pin.metas.brand.label}}</p>
                         <h3>{{pin.name}}</h3>
                     </div>
                     <dl class="metas">
-                        <dt>使いやすさ</dt>
-                        <dd>{{pin.metas.tukaiyasusa}}</dd>
-                        <dt>美しさ</dt>
-                        <dd>{{pin.metas.clean}}</dd>
-                        <dt class='none'>使える時間</dt>
-                        <dd>
-                            <time>{{pin.metas.time[0]}}〜{{pin.metas.time[1]}}</time>
-                        </dd>
+                        <dt><img src="" alt="ATM"></dt>
+                        <dd>ATM {{isLabel(pin.metas.atm)}}</dd>
+                        <dt><img src="" alt="イートイン"></dt>
+                        <dd>イートイン {{isLabel(pin.metas.eatin)}}</dd>
                     </dl>
                     <img :src="pin.eye" :alt="'写真'+pin.name" class="photo">
                 </li>
             </ul>
         </section>
+    </section>
+
+    <!--グローバル設定パネル-->
+    <section id="globalPanel">
+    
     </section>
 </main>
 
