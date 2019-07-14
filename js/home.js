@@ -47,34 +47,42 @@ new Vue({
         markers: null,
         panel:{
             activePanel:'genre',
-            activeGenre:'',
+            activeGenre:'all',
             query:{
+                food:{
+                    spoon:null,
+                    folk:null,
+                    yosan:null,
+                    genre:null
+                },
                 restroom:{
-                    exsample1:'aaaaa'
+                    bar:null,
+                    side_space:null,
+                    clean:null
+                },
+                convenience:{
+                    brand:null,
+                    atm:null,
+                    eatin:null
+                },
+                well:{
+                    well_type:null,
+                    min_width:null,
+                    max_height:null
+                },
+                o:{
+                    all:0,
+                    restroom:0,
+                    food:0,
+                    convenience:0
                 }
             }
         }
     },
     mounted(){
-        this.getAPI('all','init');
+        this.getAPI();
     },
     methods: {
-        getAPI(type,query){
-            if(query == 'init'){
-                query = 'init';
-            }else{
-                query = JSON.stringify(query);
-                console.log(query);
-                query = query.replace(/\{/g,'');
-                query = query.replace(/\}/g,'');
-                query = query.replace(/\:/g,'@');
-                query = query.replace(/\"/g,'');
-                console.log(query);
-            }
-            axios
-            .get('https://kamata-bfm.nextlav.xyz/data-api/?type='+type+'&query='+query)
-            .then(response => (this.markers = response.data))
-        },
         toggleInfoWindow: function (marker, idx) {
             this.infoWindowPos = marker.gps_pos;
             this.infoContent = {
@@ -105,7 +113,43 @@ new Vue({
             else return 'あり';
         },
         saveGlobalSetting:function(){
-            
+
+        },
+        makeQuery:function(list){
+            let queryTmp = '';
+            for(key in list){
+                if(list[key] != null){
+                    queryTmp += `&${key}=${list[key]}`;
+                }
+            }
+            this.panel.query.o[this.panel.activeGenre] = 1;
+            return queryTmp;
+        },
+        getAPI:function(){
+            let optionQuery = '';
+            let settingQuery = '';
+            if(this.panel.activePanel == 'setting'){
+                switch(this.panel.activeGenre){
+                    case 'restroom':
+
+                    break;
+                    case 'food':
+
+                    break;
+                    case 'convenience':
+                        optionQuery = this.makeQuery(this.panel.query.convenience);
+                    break;
+                }
+            }
+            if(this.panel.activePanel == 'setting'){
+                settingQuery = this.makeQuery(this.panel.query.well);
+            }
+
+            console.log('https://kamata-bfm.nextlav.xyz/data-api/?type='+this.panel.activeGenre+settingQuery+'&o='+this.panel.query.o[this.panel.activeGenre]+optionQuery);
+            //取得
+            axios
+            .get('https://kamata-bfm.nextlav.xyz/data-api/?type='+this.panel.activeGenre+settingQuery+'&o='+this.panel.query.o[this.panel.activeGenre]+optionQuery)
+            .then(response => (this.markers = response.data))
         }
     }
 });

@@ -5,9 +5,9 @@ Template Name:DATA API2
 
 
 必要なパラメタ
-?well-type=elec      車椅子のタイプ（elec/hand)
-?min-width=メートル   車椅子の幅
-?max-height=センチ    自力でこえられる高さ
+?well_type=elec      車椅子のタイプ（elec/hand)
+?min_width=メートル   車椅子の幅
+?max_height=センチ    自力でこえられる高さ
 ?type=ジャンル         検索クエリにするジャンル
 ?o=1                 ジャンルの検索条件を入れたか
 
@@ -61,14 +61,14 @@ if ( $api_query->have_posts() ) {
         $arrayTmp['post_type'] = $postType;
 
         /*==============車椅子設定と合致していないものを省く==================*/
-        if($_GET['well-type'] == 'elec'){
+        if($_GET['well_type'] == 'elec'){
             //電動車いすの場合
-            if(!($_GET['min-width']+0.15 <= $arrayTmp['well']['min-width']) && $arrayTmp['well']['min-width'] != null) continue;
+            if(!($_GET['min_width']+0.15 <= $arrayTmp['well']['min_width']) && $arrayTmp['well']['min_width'] != null) continue;
         }else{
             //手動の車椅子の場合
-            if(!($_GET['min-width'] <= $arrayTmp['well']['min-width']) && $arrayTmp['well']['min-width'] != null) continue;
+            if(!($_GET['min_width'] <= $arrayTmp['well']['min_width']) && $arrayTmp['well']['min_width'] != null) continue;
         }
-        if(!($_GET['max-height'] >= $arrayTmp['well']['max-height']) && $arrayTmp['well']['max-height'] != null) continue;
+        if(!($_GET['max_height'] >= $arrayTmp['well']['max_height']) && $arrayTmp['well']['max_height'] != null) continue;
         /*==============飲食店条件と合致していないものを省く=================*/
         if($arrayTmp['post_type'] == 'food' && $_GET['o'] == 1){
             $tool = get_field('metas')['tool'];

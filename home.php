@@ -5,6 +5,7 @@ Template name:トップページ
 
 get_header();
 ?>
+<link rel="stylesheet" href="style/material.min.css">
 <link rel="stylesheet" href="style/home.min.css">
 </head>
 <body>
@@ -80,40 +81,46 @@ get_header();
         <!--ジャンル選択パネル-->
         <section id="genre-panel" v-show='panel.activePanel == "genre"'>
             <header>
-                <h2>さがす</h2>
+                <h2 class="mdl-button mdl-js-button mdl-js-ripple-effect">さがす</h2>
             </header>
             <ul>
                 <li>
                     <button
-                    @click='[panel.activeGenre = "restroom",panel.activePanel = "list",getAPI("restroom","init")]'>
+                    @click='[
+                        panel.activeGenre = "restroom",
+                        panel.activePanel = "list",
+                        getAPI()]'>
                         <img src="images/pin/toire-C.svg" alt="">
                         <p>トイレ</p>
                     </button>
                 </li>
                 <li>
                     <button
-                    @click='[panel.activeGenre = "food",panel.activePanel = "list",getAPI("food","init")]'>
+                    @click='[
+                        panel.activeGenre = "food",
+                        panel.activePanel = "list",
+                        getAPI()]'>
                         <img src="images/pin/food-C.svg" alt="">
                         <p>飲食店</p>
                     </button>
                 </li>
                 <li>
                     <button
-                    @click='[panel.activeGenre = "convenience",panel.activePanel = "list",getAPI("convenience","init")]'>
+                    @click='[panel.activeGenre = "convenience",panel.activePanel = "list",getAPI()]'>
                         <img src="images/pin/store-C.svg" alt="">
                         <p>コンビニ</p>
                     </button>
                 </li>
                 <li>
                     <button
-                    @click='[panel.activeGenre = "amusement",panel.activePanel = "list",getAPI("amusement","init")]'>
+                    @click='[panel.activeGenre = "amusement",panel.activePanel = "list",getAPI()]'>
                         <img src="images/pin/mic-C.svg" alt="">
                         <p>アミューズメント</p>
                     </button>
                 </li>
                 <li>
                     <button
-                    @click='[panel.activeGenre = "all",panel.activePanel = "list",getAPI("all","init")]'>
+                    @click='[panel.activeGenre = "all",panel.activePanel = "list",getAPI()]'>
                         <img src="images/pin/mic-C.svg" alt="">
                         <p>すべて</p>
                     </button>
@@ -218,8 +225,8 @@ get_header();
                 <button
                 class="check"
                 @click='[
-                    panel.activePanel = "list",
-                    getAPI(panel.activeGenre,panel.query[panel.activeGenre])
+                    getAPI(),
+                    panel.activePanel = "list"
                 ]'>✅</button>
             </header>
             <!--ジャンル：トイレ-->
@@ -254,7 +261,16 @@ get_header();
             <!--ジャンル：コンビニ-->
             <section class="convenience" v-show='panel.activeGenre == "convenience"'>
                 <h3 class="none">コンビニの検索条件</h3>
-                <p>コンビニ未定義</p>
+                <dl>
+                    <dt>ブランド</dt>
+                    <dd>
+                        <input type="radio" id="seven" name="brand" value="seven" v-model='panel.query.convenience.brand'>
+                        <label for="seven">セブン</label>
+                        <input type="radio" id="yamazaki" name="brand" value="yamazaki" v-model='panel.query.convenience.brand'>
+                        <label for="yamazaki">デイリー</label>
+                        {{panel.query.convenience.brand}}
+                    </dd>
+                </dl>
             </section>
         </section>
     </section>
@@ -265,6 +281,7 @@ get_header();
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
 <script src="js/vue-google-maps.js"></script>
 <script><?php include('js/home.js');?></script>
+<script defer src="js/material.min.js"></script>
 
 <?php wp_footer(); ?>
 </body>
