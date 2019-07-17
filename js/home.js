@@ -113,7 +113,7 @@ new Vue({
             else return 'あり';
         },
         saveGlobalSetting:function(){
-
+            
         },
         makeQuery:function(list){
             let queryTmp = '';

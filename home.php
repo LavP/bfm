@@ -9,6 +9,7 @@ get_header();
 <link rel="stylesheet" href="style/home.min.css">
 </head>
 <body>
+    
 <header id="mainHeader">
     <hgroup>
         <h1>バリアフリーマップ</h1>
@@ -90,7 +91,7 @@ get_header();
                         panel.activeGenre = "restroom",
                         panel.activePanel = "list",
                         getAPI()]'>
-                        <img src="images/pin/toire-C.svg" alt="">
+                        <img src="images/pin/toire-C.svg" alt="トイレ">
                         <p>トイレ</p>
                     </button>
                 </li>
@@ -100,28 +101,37 @@ get_header();
                         panel.activeGenre = "food",
                         panel.activePanel = "list",
                         getAPI()]'>
-                        <img src="images/pin/food-C.svg" alt="">
+                        <img src="images/pin/food-C.svg" alt="飲食店">
                         <p>飲食店</p>
                     </button>
                 </li>
                 <li>
                     <button
-                    @click='[panel.activeGenre = "convenience",panel.activePanel = "list",getAPI()]'>
-                        <img src="images/pin/store-C.svg" alt="">
+                    @click='[
+                        panel.activeGenre = "convenience",
+                        panel.activePanel = "list",
+                        getAPI()]'>
+                        <img src="images/pin/store-C.svg" alt="コンビニ">
                         <p>コンビニ</p>
                     </button>
                 </li>
                 <li>
                     <button
-                    @click='[panel.activeGenre = "amusement",panel.activePanel = "list",getAPI()]'>
-                        <img src="images/pin/mic-C.svg" alt="">
+                    @click='[
+                        panel.activeGenre = "amusement",
+                        panel.activePanel = "list",
+                        getAPI()]'>
+                        <img src="images/pin/mic-C.svg" alt="アミューズメント">
                         <p>アミューズメント</p>
                     </button>
                 </li>
                 <li>
                     <button
-                    @click='[panel.activeGenre = "all",panel.activePanel = "list",getAPI()]'>
-                        <img src="images/pin/mic-C.svg" alt="">
+                    @click='[
+                        panel.activeGenre = "all",
+                        panel.activePanel = "list",
+                        getAPI()]'>
+                        <img src="images/pin/mic-C.svg" alt="すべて">
                         <p>すべて</p>
                     </button>
                 </li>
@@ -233,18 +243,29 @@ get_header();
             <section class="restroom" v-show='panel.activeGenre == "restroom"'>
                 <h3 class="none">トイレの検索条件</h3>
                 <dl>
-                    <dt>道具</dt>
+                    <dt>横のバーは</dt>
                     <dd>
-                        <label for="tool">
-                            <input type="checkbox" name="" id="">
-                            <span>フォーク</span>
-                            <input type="checkbox" name="" id="">
-                            <span>スプーン</span>
-                        </label>
-                        <label for="tool">
-                            <input type="checkbox" name="" id="">
-                            <span>スプーン</span>
-                        </label>
+                        <input type="radio" name="bar" id="dokaseru" v-model='panel.query.restroom.bar' value='1'>
+                        <label for="dokaseru">どかせる</label>
+                        <input type="radio" name="bar" id="dokasenai" v-model='panel.query.restroom.bar' value='0'>
+                        <label for="dokasenai">どかせない</label>
+                    </dd>
+                    <dl>便座横の空間</dl>
+                    <dd>
+                        <input 
+                        type="radio" 
+                        name="bar" 
+                        id="kamiza" 
+                        v-model='panel.query.restroom.side_space' 
+                        value='1'>
+                        <label for="kamiza">上座</label>
+                        <input 
+                        type="radio" 
+                        name="bar" 
+                        id="simoza" 
+                        v-model='panel.query.restroom.side_space' 
+                        value='2'>
+                        <label for="simoza">下座</label>
                     </dd>
                 </dl>
             </section>
@@ -264,9 +285,19 @@ get_header();
                 <dl>
                     <dt>ブランド</dt>
                     <dd>
-                        <input type="radio" id="seven" name="brand" value="seven" v-model='panel.query.convenience.brand'>
+                        <input 
+                        type="radio" 
+                        id="seven" 
+                        name="brand" 
+                        value="seven" 
+                        v-model='panel.query.convenience.brand'>
                         <label for="seven">セブン</label>
-                        <input type="radio" id="yamazaki" name="brand" value="yamazaki" v-model='panel.query.convenience.brand'>
+                        <input 
+                        type="radio" 
+                        id="yamazaki" 
+                        name="brand" 
+                        value="yamazaki" 
+                        v-model='panel.query.convenience.brand'>
                         <label for="yamazaki">デイリー</label>
                         {{panel.query.convenience.brand}}
                     </dd>
