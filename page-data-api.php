@@ -106,6 +106,7 @@ if ( $api_query->have_posts() ) {
             'lng' => round($gps['lng'],10)
         ];
         $arrayTmp['eye'] = get_field('eye');
+        $arrayTmp['postid'] = get_the_ID();
         /*==========飲食店データ格納（リスト状態）===============*/
         if($arrayTmp['post_type'] == 'food'){
             $arrayTmp['icon'] = $templateURI.'/images/pin/food.png';

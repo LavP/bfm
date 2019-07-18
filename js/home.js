@@ -45,9 +45,13 @@ new Vue({
         },
         activePin:'',
         markers: null,
+        thePostData:null,
         panel:{
-            activePanel:'genre',
+            activeGlobalPanel:'search-panel',
+            activeSearchPanel:'genre',
             activeGenre:'all',
+            activeInfoPanel:'shisetsu',
+            activePostID:null,//TODO:あとでここに格納するようにつくる
             query:{
                 food:{
                     spoon:null,
@@ -85,6 +89,7 @@ new Vue({
     methods: {
         toggleInfoWindow: function (marker, idx) {
             this.infoWindowPos = marker.gps_pos;
+            /*
             this.infoContent = {
                 name:marker.name,
                 minCost:marker.metas.cost.min,
@@ -93,6 +98,7 @@ new Vue({
                 photo:marker.eye,
                 dup:marker.dup
             };
+            */
 
             //check if its the same marker that was selected if yes toggle
             if (this.currentMidx == idx) {
@@ -151,8 +157,10 @@ new Vue({
             .get('https://kamata-bfm.nextlav.xyz/data-api/?type='+this.panel.activeGenre+settingQuery+'&o='+this.panel.query.o[this.panel.activeGenre]+optionQuery)
             .then(response => (this.markers = response.data))
         },
-        getBrand:function(){
-            
+        getThePostData:function(){
+            axios
+            .get('https://kamata-bfm.nextlav.xyz/wp-json/wp/v2/'+this.panel.activeGenre+'/'+this.panel.activePostID)
+            .then(response => (this.thePostData = response.data))
         }
     }
 });

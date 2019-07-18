@@ -218,6 +218,18 @@
     }
 }
 
+#infoPanel{
+    position: absolute;
+    bottom: 0;
+    width: calc(100% - 2em);
+    margin: 0 auto;
+    left: 0;
+    right: 0s;
+    background-color: white;
+    padding: 1em;
+    box-sizing: border-box;
+}
+
 #mainFooter{
     display: none;
 }
