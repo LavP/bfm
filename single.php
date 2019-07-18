@@ -18,6 +18,12 @@ get_header();
         このサイトは日本工学院 蒲田校に入学を検討している車椅子ユーザーのためのWebサイトです。
     </p>
 </header>
+<script>
+ console.log("<?php echo the_field('info')['name'];?>");
+</script>
+<div style="position:fixed;z-index:10000">
+    <?php echo var_dump(the_field('info'));?>
+</div>
 <main id='mainMain'>
     <section id="googlemap">
         <google-map
@@ -32,10 +38,12 @@ get_header();
             @closeclick="infoWinOpen=false">
                 <div class='pinPopup'>
                     <img :src="infoContent.photo" :alt="infoContent.name">
-                    <h3>{{infoContent.name}}</h3>
-                    <p class='cost'>{{infoContent.minCost}}〜{{infoContent.maxCost}}円</p>
-                    <p class='sougouhyouka'>総合評価 {{infoContent.sougouhyouka}}</p>
-                    <p class='dup'>{{infoContent.dup}}</p>
+                    <h4><?php echo the_field('genre');?></h4>
+                    <h3><?php echo the_field('info')['name'];?></h3>
+                    <p class='cost'><?php echo the_field('cost')['min'];?>~<?php echo the_field('cost')['max'];?>~<?php echo the_field('cost')['max'];?></p>
+                    <p class='time'><?php echo the_field('info')['start_time'];?>-<?php echo the_field('info')['end_time'];?></p>
+                    <p class='sougouhyouka'>総合評価<?php echo the_field('sougouhyouka');?></p>
+                    
                 </div>
             </gmap-info-window>
             <gmap-marker
