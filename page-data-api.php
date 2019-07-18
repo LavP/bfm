@@ -72,8 +72,8 @@ if ( $api_query->have_posts() ) {
         /*==============飲食店条件と合致していないものを省く=================*/
         if($arrayTmp['post_type'] == 'food' && $_GET['o'] == 1){
             $tool = get_field('metas')['tool'];
-            if(!($_GET['spoon'] == 1 && in_array('spoon',$tool)) && $_GET['spoon'] != null) continue;
-            if(!($_GET['folk'] == 1 && in_array('folk',$tool)) && $_GET['folk'] != null) continue;
+            if(!($_GET['spoon'] == true && in_array('spoon',$tool)) && $_GET['spoon'] != null) continue;
+            if(!($_GET['folk'] == true && in_array('folk',$tool)) && $_GET['folk'] != null) continue;
             if(!($_GET['yosan'] >= get_field('foods')['match']['min']) && $_GET['yosan'] != null) continue;
             if(!(get_field('foods')['genre'] == $_GET['genre']) && $_GET['genre'] != null) continue;
         }
@@ -81,9 +81,10 @@ if ( $api_query->have_posts() ) {
         if($arrayTmp['post_type'] == 'convenience' && $_GET['o'] == 1){
             //TODO:その他コンビニ対応まだ
             if(!($_GET['brand'] == get_field('metas')['type']['value']) && $_GET['brand'] != null) continue;
-            if(get_field('metas')['atm'] != 0 && $_GET['atm'] == 1 && $_GET['atm'] != null) continue;
+            //修正
+            if(get_field('metas')['atm'] != 0 && $_GET['atm'] == true && $_GET['atm'] != null) continue;
             //TODO:多分これバグある
-            if(get_field('metas')['eatin'] != true && $_GET['eatin'] == 1 && $_GET['eatin'] != null) continue;
+            if(get_field('metas')['eatin'] != 1 && $_GET['eatin'] == true && $_GET['eatin'] != null) continue;
         }
         /*==============トイレ条件と合致していないものを省く=================*/
         if($arrayTmp['post_type'] == 'restroom' && $_GET['o'] == 1){

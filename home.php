@@ -245,39 +245,98 @@ get_header();
                 <dl>
                     <dt>横のバーは</dt>
                     <dd>
-                        <input type="radio" name="bar" id="dokaseru" v-model='panel.query.restroom.bar' value='1'>
+                        <input 
+                        type="radio" 
+                        name="bar" 
+                        id="dokaseru" 
+                        v-model='panel.query.restroom.bar' 
+                        value='1'>
                         <label for="dokaseru">どかせる</label>
-                        <input type="radio" name="bar" id="dokasenai" v-model='panel.query.restroom.bar' value='0'>
+                        <input 
+                        type="radio" 
+                        name="bar" 
+                        id="dokasenai" 
+                        v-model='panel.query.restroom.bar' 
+                        value='0'>
                         <label for="dokasenai">どかせない</label>
                     </dd>
                     <dl>便座横の空間</dl>
                     <dd>
                         <input 
                         type="radio" 
-                        name="bar" 
+                        name="space" 
                         id="kamiza" 
                         v-model='panel.query.restroom.side_space' 
                         value='1'>
                         <label for="kamiza">上座</label>
                         <input 
                         type="radio" 
-                        name="bar" 
+                        name="space" 
                         id="simoza" 
                         v-model='panel.query.restroom.side_space' 
                         value='2'>
                         <label for="simoza">下座</label>
+                    </dd>
+                    <dt>清潔さ</dt>
+                    <dd>
+                        <input 
+                        type="range" 
+                        list="clean" 
+                        name="clean" 
+                        v-model='panel.query.restroom.clean'
+                        min="0" max="2" step="1">
+                        <datalist id="clean">
+                        <option value="0" label="汚い">
+                        <option value="1" label="ふつう">
+                        <option value="2" label="きれい">
+                        </datalist>
                     </dd>
                 </dl>
             </section>
             <!--ジャンル：飲食-->
             <section class="food" v-show='panel.activeGenre == "food"'>
                 <h3 class="none">飲食の検索条件</h3>
-                <p>飲食未定義</p>
-            </section>
-            <!--ジャンル：アミューズメント-->
-            <section class="amusement" v-show='panel.activeGenre == "amusement"'>
-                <h3 class="none">アミューズメントの検索条件</h3>
-                <p>アミューズメント未定義</p>
+                <dl>
+                    <dt>道具</dt>
+                    <dd>
+                        <input type="checkbox" name="tool" id="spoon" v-model="panel.query.food.spoon">
+                        <label for="spoon">スプーン</label>
+                        <input type="checkbox" name="tool" id="folk" v-model="panel.query.food.folk">
+                        <label for="folk">フォーク</label>
+                    </dd>
+                    <dt>食のジャンル</dt>
+                    <dd>
+                        <?php
+                        $api_query = new WP_Query(
+                            array(
+                                'post_type' => $type,
+                                'posts_per_page' => 100,
+                            )
+                        );
+                        if ( $api_query->have_posts() ) {
+                            while ( $api_query->have_posts() ) {
+                                $api_query->the_post();
+                        ?>
+                        
+                        <?php } wp_reset_postdata();?>
+                    </dd>
+                    <dt>予算</dt>
+                    <dd>
+                        <input 
+                        type="range" 
+                        list="yosan" 
+                        name="yosan" 
+                        v-model='panel.query.food.yosan'
+                        min="0" max="2000" step="100">
+                        <datalist id="yosan">
+                        <option value="0" label="0">
+                        <option value="500" label="500">
+                        <option value="1000" label="1000">
+                        <option value="1500" label="1500">
+                        <option value="2000" label="2000">
+                        </datalist>
+                    </dd>
+                </dl>
             </section>
             <!--ジャンル：コンビニ-->
             <section class="convenience" v-show='panel.activeGenre == "convenience"'>
@@ -294,12 +353,32 @@ get_header();
                         <label for="seven">セブン</label>
                         <input 
                         type="radio" 
-                        id="yamazaki" 
+                        id="famima" 
                         name="brand" 
-                        value="yamazaki" 
+                        value="famima" 
                         v-model='panel.query.convenience.brand'>
-                        <label for="yamazaki">デイリー</label>
-                        {{panel.query.convenience.brand}}
+                        <label for="famima">ファミマ</label>
+                        <input 
+                        type="radio" 
+                        id="lawson" 
+                        name="brand" 
+                        value="lawson" 
+                        v-model='panel.query.convenience.brand'>
+                        <label for="lawson">ローソン</label>
+                        <input 
+                        type="radio" 
+                        id="other" 
+                        name="brand" 
+                        value="other" 
+                        v-model='panel.query.convenience.brand'>
+                        <label for="other">その他</label>
+                    </dd>
+                    <dt>施設</dt>
+                    <dd>
+                        <input type="checkbox" name="atm" id="atm" v-model="panel.query.convenience.atm">
+                        <label for="atm">ATM</label>
+                        <input type="checkbox" name="eatin" id="eatin" v-model="panel.query.convenience.eatin">
+                        <label for="eatin">イートイン</label>
                     </dd>
                 </dl>
             </section>

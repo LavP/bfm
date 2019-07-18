@@ -131,10 +131,10 @@ new Vue({
             if(this.panel.activePanel == 'setting'){
                 switch(this.panel.activeGenre){
                     case 'restroom':
-
+                        optionQuery = this.makeQuery(this.panel.query.restroom);
                     break;
                     case 'food':
-
+                        optionQuery = this.makeQuery(this.panel.query.food);
                     break;
                     case 'convenience':
                         optionQuery = this.makeQuery(this.panel.query.convenience);
@@ -150,6 +150,9 @@ new Vue({
             axios
             .get('https://kamata-bfm.nextlav.xyz/data-api/?type='+this.panel.activeGenre+settingQuery+'&o='+this.panel.query.o[this.panel.activeGenre]+optionQuery)
             .then(response => (this.markers = response.data))
+        },
+        getBrand:function(){
+            
         }
     }
 });
