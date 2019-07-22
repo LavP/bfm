@@ -229,7 +229,7 @@ get_header();
 					toggleInfoWindow(pin),
 					activePin = pin.name,
 					panel.activePostID = pin.postid,
-					getThePostData(pin.post_type),
+					getThePostData(),
 					panel.activeGlobalPanel = "info"
 				]'>
 					<!--飲食店のリスト項目-->
@@ -624,7 +624,7 @@ get_header();
 				thePostData.type != "convenience" && 
 				thePostData.type == "amusement"'>
 					<dt>接客</dt>
-					<dd></dd>
+					<dd>{{thePostData.acf.setubi.sekkyaku}}</dd>
 				</div>
 				<div v-if='
 				thePostData.type != "food" && 
@@ -632,7 +632,7 @@ get_header();
 				thePostData.type != "convenience" && 
 				thePostData.type == "amusement"'>
 					<dt>ピークタイムの混雑度</dt>
-					<dd></dd>
+					<dd>{{thePostData.acf.setubi.pi-kutime}}</dd>
 				</div>
 				<div v-if='
 				thePostData.type != "food" && 
@@ -640,7 +640,7 @@ get_header();
 				thePostData.type != "convenience" && 
 				thePostData.type == "amusement"'>
 					<dt>楽しめるための工夫</dt>
-					<dd></dd>
+					<dd><p>{{thePostData.acf.info.dup}}</p></dd>
 				</div>
 				<div v-if='
 				thePostData.type == "food" && 
@@ -648,7 +648,7 @@ get_header();
 				thePostData.type != "convenience" && 
 				thePostData.type == "amusement"'>
 					<dt>公式HP</dt>
-					<dd></dd>
+					<dd><a href="thePostData.link" target="_blank">{{thePostData.link}}</dd>
 				</div>
 			</dl>
 		</section>
