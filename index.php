@@ -5,7 +5,6 @@ Template name:トップページ
 
 get_header();
 ?>
-<link rel="stylesheet" href="style/material.min.css">
 <link rel="stylesheet" href="style/home.min.css">
 </head>
 <body>
@@ -25,19 +24,52 @@ get_header();
 		:center="center"
 		:zoom="mapZoom"
 		:gestureHandling="none"
+		:options="{
+			zoomControl: false,
+			mapTypeControl: false,
+			scaleControl: false,
+			streetViewControl: false,
+			rotateControl: false,
+			fullscreenControl: false,
+			disableDefaultUi: false
+		}"
 		style="width: 100%; height: 100%; display: inline-block">
 			<gmap-info-window
 			:options="infoOptions"
 			:position="infoWindowPos"
 			:opened="infoWinOpen"
 			@closeclick="infoWinOpen=false">
-				<div class='pinPopup'>
-					<img :src="infoContent.photo" :alt="infoContent.name">
-					<h3>{{infoContent.name}}</h3>
-					<p class='cost'>{{infoContent.minCost}}〜{{infoContent.maxCost}}円</p>
-					<p class='sougouhyouka'>総合評価 {{infoContent.sougouhyouka}}</p>
-					<p class='dup'>{{infoContent.dup}}</p>
-					<button @click='panel.activeGlobalPanel = "search-panel"'>もどる</button>
+				<div class='pinPopup' v-if='thePostData.type == "food"'>
+					<img :src="thePostData.acf.eye.sizes.thumbnail" :alt="thePostData.acf.eye.sizes.thumbnail">
+					<p class='genre'>{{thePostData.acf.foods.genre}}</p>
+					<h3>{{thePostData.acf.info.name}}</h3>
+					<p class='cost'>{{thePostData.acf.foods.cost.min}}&mdash;{{thePostData.acf.foods.cost.max}}円</p>
+					<p class='time'>{{thePostData.acf.info.start_time}}&mdash;{{thePostData.acf.info.end_time}}</p>
+					<p class='sougouhyouka'>総合評価<br>{{thePostData.acf.foods.oisii}}</p>
+					<button @click='[panel.activeGlobalPanel = "search-panel",infoWinOpen = false]'>もどる</button>
+				</div>
+				<div class='pinPopup' v-if='thePostData.type == "restroom"'>
+					<img :src="thePostData.acf.eye.sizes.thumbnail" :alt="thePostData.acf.eye.sizes.thumbnail">
+					<h3>{{thePostData.acf.info.name}}</h3>
+					<p class='time'>{{thePostData.acf.info.start_time}}&mdash;{{thePostData.acf.info.end_time}}</p>
+					<p class='sougouhyouka'>総合評価<br>{{thePostData.acf.metas.tukaiyasusa}}</p>
+					<button @click='[panel.activeGlobalPanel = "search-panel",infoWinOpen = false]'>もどる</button>
+				</div>
+				<div class='pinPopup' v-if='thePostData.type == "convenience"'>
+					<img :src="thePostData.acf.eye.sizes.thumbnail" :alt="thePostData.acf.eye.sizes.thumbnail">
+					<p class='genre'>{{thePostData.acf.metas.type.label}}</p>
+					<h3>{{thePostData.acf.info.name}}</h3>
+					<p class='time'>{{thePostData.acf.info.start_time}}&mdash;{{thePostData.acf.info.end_time}}</p>
+					<button @click='[panel.activeGlobalPanel = "search-panel",infoWinOpen = false]'>もどる</button>
+				</div>
+				<div class='pinPopup' v-if='thePostData.type == "amusement"'>
+					<img :src="thePostData.acf.eye.sizes.thumbnail" :alt="thePostData.acf.eye.sizes.thumbnail">
+					<p class='genre'>{{thePostData.acf.genre[0]}}</p>
+					<h3>{{thePostData.acf.info.name}}</h3>
+					<p class='time'>{{thePostData.acf.info.start_time}}&mdash;{{thePostData.acf.info.end_time}}</p>
+					<p class='cost'>{{thePostData.acf.cost.min}}&mdash;{{thePostData.acf.cost.max}}円</p>
+					<p class='sougouhyouka'>総合評価<br>{{thePostData.acf.sougouhyouka}}</p>
+					<button @click='[panel.activeGlobalPanel = "search-panel",infoWinOpen = false]'>もどる</button>
 				</div>
 			</gmap-info-window>
 			<gmap-marker
@@ -70,10 +102,48 @@ get_header();
 			<button
 			class="diside"
 			@click='[
-				panel.activeGlobalPanel = "search-panel",
-				saveGlobalSetting()
+				panel.activeGlobalPanel = "search-panel"
 			]'>✅</button>
 		</header>
+		<dl>
+			<dt>車椅子の横幅</dt>
+			<dd>
+				<input 
+				type="range" 
+				list="min_width" 
+				name="min_width" 
+				v-model='panel.query.well.min_width'
+				min="0.5" max="2" step="0.1">
+				<span>{{panel.query.well.min_width}}</span>
+			</dd>
+			<dt>どれくらいの高さまで<br>自力でこえられるか</dt>
+			<dd>
+				<input 
+				type="range" 
+				list="max_height" 
+				name="max_height" 
+				v-model='panel.query.well.max_height'
+				min="0" max="20" step="1">
+				<span>{{panel.query.well.max_height}}</span>
+			</dd>
+			<dt>車椅子の種類</dt>
+			<dd>
+				<input 
+				type="radio" 
+				name="well_type" 
+				id="syudou" 
+				v-model='panel.query.well.well_type' 
+				value='hand'>
+				<label for="syudou">手動</label>
+				<input 
+				type="radio" 
+				name="well_type" 
+				id="elec" 
+				v-model='panel.query.well.well_type' 
+				value='elec'>
+				<label for="elec">電動</label>
+			</dd>
+		</dl>
 	</section>
 
 	<!--検索機能メインパネル-->
@@ -159,7 +229,7 @@ get_header();
 					toggleInfoWindow(pin),
 					activePin = pin.name,
 					panel.activePostID = pin.postid,
-					getThePostData(),
+					getThePostData(pin.post_type),
 					panel.activeGlobalPanel = "info"
 				]'>
 					<!--飲食店のリスト項目-->
@@ -294,6 +364,7 @@ get_header();
 						<option value="1" label="ふつう">
 						<option value="2" label="きれい">
 						</datalist>
+						<span>{{panel.query.restroom.clean}}</span>
 					</dd>
 				</dl>
 			</section>
@@ -345,6 +416,7 @@ get_header();
 						<option value="1500" label="1500">
 						<option value="2000" label="2000">
 						</datalist>
+						<span>{{panel.query.food.yosan}}</span>
 					</dd>
 				</dl>
 			</section>
@@ -401,37 +473,188 @@ get_header();
 			<button @click='panel.activeInfoPanel = "shisetsu"'>施設情報</button>
 			<button @click='panel.activeInfoPanel = "photo"'>写真</button>
 		</div>
-		<div class="shisetsuArea" v-show='panel.activeInfoPanel == "shisetsu"'>
+		<section class="shisetsuArea" v-show='panel.activeInfoPanel == "shisetsu"'>
 			施設のパネル
 			<dl>
-			    <dt>ひとこと</dt>
-				<dd><p></p></dd>
-				<hr>
-				<dt>店の広さ</dt>
-				<dd></dd>
-				<hr>
-				<dt>注文形式</dt>
-				<dd></dd>
-				<hr>
-				<dt>店内段差</dt>
-				<dd></dd>
-				<hr>
-				<dt>店員さん</dt>
-				<dd></dd>
-				<hr>
-				<dt>道具</dt>
-				<dd></dd>
-				<hr>
-				<dt>椅子</dt>
-				<dd></dd>
-				<hr>
-				<dt>公式HP</dt>
-				<dd></dd>
+				<div v-if='
+				thePostData.type != "food" && 
+				thePostData.type == "restroom" && 
+				thePostData.type != "convenience" && 
+				thePostData.type != "amusement"'>
+			    	<dt>便座横のバーは収納できるか</dt>
+					<dd>
+						<span :class='{ checkin : thePostData.acf.metas.fold_the_bar == true }'>どかせる</span>
+						<span :class='{ checkin : thePostData.acf.metas.fold_the_bar == false }'>どかせない</span>
+					</dd>
+			    </div>
+			    <div v-if='
+				thePostData.type != "food" && 
+				thePostData.type == "restroom" && 
+				thePostData.type != "convenience" && 
+				thePostData.type != "amusement"'>
+			    	<dt>便座横の空間</dt>
+					<dd>
+						<span :class='{ checkin : thePostData.acf.metas.side_space == 0 }'>ない</span>
+						<span :class='{ checkin : thePostData.acf.metas.side_space == 1 }'>上座</span>
+						<span :class='{ checkin : thePostData.acf.metas.side_space == 2 }'>下座</span>
+					</dd>
+			    </div>
+				<div v-if='
+				thePostData.type != "food" && 
+				thePostData.type == "restroom" && 
+				thePostData.type != "convenience" && 
+				thePostData.type != "amusement"'>
+					<dt>手洗い台の高さ</dt>
+					<dd>
+						<span :class='{ checkin : thePostData.acf.metas.hand_height == 0 }'>低い</span>
+						<span :class='{ checkin : thePostData.acf.metas.hand_height == 1 }'>ちょうどよい</span>
+						<span :class='{ checkin : thePostData.acf.metas.hand_height == 2 }'>高い</span>
+					</dd>
+				</div>
+				<div v-if='
+				thePostData.type != "food" && 
+				thePostData.type == "restroom" && 
+				thePostData.type != "convenience" && 
+				thePostData.type != "amusement"'>
+					<dt>便座の高さ</dt>
+					<dd>
+						<span :class='{ checkin : thePostData.acf.metas.benza_height == 0 }'>低い</span>
+						<span :class='{ checkin : thePostData.acf.metas.benza_height == 1 }'>ちょうどよい</span>
+						<span :class='{ checkin : thePostData.acf.metas.benza_height == 2 }'>高い</span>
+					</dd>
+				</div>
+				<div v-if='
+				thePostData.type != "food" && 
+				thePostData.type == "restroom" && 
+				thePostData.type != "convenience" && 
+				thePostData.type != "amusement"'>
+					<dt>トイレの清潔さ</dt>
+					<dd>
+						<span :class='{ checkin : thePostData.acf.metas.clean == 0 }'>汚い</span>
+						<span :class='{ checkin : thePostData.acf.metas.clean == 1 }'>ちょうどよい</span>
+						<span :class='{ checkin : thePostData.acf.metas.clean == 2 }'>美しい</span>
+					</dd>
+				</div>
+				<div v-if='
+				thePostData.type != "food" && 
+				thePostData.type == "restroom" && 
+				thePostData.type != "convenience" && 
+				thePostData.type != "amusement"'>
+					<dt>使いやすさ</dt>
+					<dd>{{thePostData.acf.metas.tukaiyasusa}}</dd>
+				</div>
+				<div v-if='
+				thePostData.type == "food" && 
+				thePostData.type != "restroom" && 
+				thePostData.type != "convenience" && 
+				thePostData.type != "amusement"'>
+					<dt>注文形式</dt>
+					<dd>
+						<span :class='{ checkin : thePostData.acf.metas.orderstyle == "0:食券式" }'>食券式</span>
+						<span :class='{ checkin : thePostData.acf.metas.orderstyle == "1:オーダー式" }'>オーダー式</span>
+					</dd>
+				</div>
+				<div v-if='
+				thePostData.type == "food" && 
+				thePostData.type != "restroom" && 
+				thePostData.type != "convenience" && 
+				thePostData.type != "amusement"'>
+					<dt>ＩＣの支払</dt>
+					<dd>
+						<span :class='{ checkin : thePostData.acf.metas.payment == true }'>ＩＣの支払ができる</span>
+						<span :class='{ checkin : thePostData.acf.metas.payment == false }'>ＩＣの支払ができない</span>
+					</dd>
+				</div>
+				<div v-if='
+				thePostData.type == "food" && 
+				thePostData.type != "restroom" && 
+				thePostData.type != "convenience" && 
+				thePostData.type != "amusement"'>
+					<dt>店員さん</dt>
+					<dd>{{thePostData.acf.metas.smile}}</dd>
+				</div>
+				<div v-if='
+				thePostData.type == "food" && 
+				thePostData.type != "restroom" && 
+				thePostData.type != "convenience" && 
+				thePostData.type != "amusement"'>
+					<dt>道具</dt>
+					<dd>
+						<span :class='{ checkin : thePostData.acf.metas.tool[0] == "spoon" }'>スプーン</span>
+						<span :class='{ checkin : thePostData.acf.metas.tool[0] == "spoon" }'>フォーク</span>
+					</dd>
+				</div>
+				<div v-if='
+				thePostData.type == "food" && 
+				thePostData.type != "restroom" && 
+				thePostData.type != "convenience" && 
+				thePostData.type != "amusement"'>
+					<dt>椅子</dt>
+					<dd>
+						<span :class='{ checkin : thePostData.acf.metas.chair == true }'>どかせる</span>
+						<span :class='{ checkin : thePostData.acf.metas.chair == false }'>どかせない</span>
+					</dd>
+				</div>
+				<div v-if='
+				thePostData.type != "food" && 
+				thePostData.type != "restroom" && 
+				thePostData.type == "convenience" && 
+				thePostData.type != "amusement"'>
+					<dt>ATM</dt>
+					<dd>
+						<span :class='{ checkin : thePostData.acf.metas.atm[0] == 0 }'>ない</span>
+						<span :class='{ checkin : thePostData.acf.metas.atm[0] == 1 }'>ある</span>
+						<span :class='{ checkin : thePostData.acf.metas.atm[0] == 2 }'>車イスでも操作できる</span>
+					</dd>
+				</div>
+				<div v-if='
+				thePostData.type != "food" && 
+				thePostData.type != "restroom" && 
+				thePostData.type == "convenience" && 
+				thePostData.type != "amusement"'>
+					<dt>イートインコーナー</dt>
+					<dd>
+						<span :class='{ checkin : thePostData.acf.metas.eatin == true }'>ある</span>
+						<span :class='{ checkin : thePostData.acf.metas.eatin == false }'>ない</span>
+					</dd>
+				</div>
+				<div v-if='
+				thePostData.type != "food" && 
+				thePostData.type != "restroom" && 
+				thePostData.type != "convenience" && 
+				thePostData.type == "amusement"'>
+					<dt>接客</dt>
+					<dd></dd>
+				</div>
+				<div v-if='
+				thePostData.type != "food" && 
+				thePostData.type != "restroom" && 
+				thePostData.type != "convenience" && 
+				thePostData.type == "amusement"'>
+					<dt>ピークタイムの混雑度</dt>
+					<dd></dd>
+				</div>
+				<div v-if='
+				thePostData.type != "food" && 
+				thePostData.type != "restroom" && 
+				thePostData.type != "convenience" && 
+				thePostData.type == "amusement"'>
+					<dt>楽しめるための工夫</dt>
+					<dd></dd>
+				</div>
+				<div v-if='
+				thePostData.type == "food" && 
+				thePostData.type != "restroom" && 
+				thePostData.type != "convenience" && 
+				thePostData.type == "amusement"'>
+					<dt>公式HP</dt>
+					<dd></dd>
+				</div>
 			</dl>
-		</div>
-		<div class="photoArea" v-show='panel.activeInfoPanel == "photo"'>
-			写真のパネル
-		</div>
+		</section>
+		<section class="photoArea" v-show='panel.activeInfoPanel == "photo"'>
+			<div v-html='thePostData.acf.gallery'></div>
+		</section>
 	</section>
 </main>
 
@@ -440,7 +663,6 @@ get_header();
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
 <script src="js/vue-google-maps.js"></script>
 <script><?php include('js/home.js');?></script>
-<script defer src="js/material.min.js"></script>
 
 <?php wp_footer(); ?>
 </body>

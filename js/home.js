@@ -1,7 +1,7 @@
 Vue.use(VueGoogleMaps, {
     load: {
         key: "AIzaSyAOFSkQMtyOAI_LNePOHmyqC4Zhk-ZJm6Y",
-        v: "3.26"
+        v: "3.37"
     }
 });
 
@@ -45,13 +45,33 @@ new Vue({
         },
         activePin:'',
         markers: null,
-        thePostData:null,
+        thePostData:{
+            type:null,
+            acf:{
+                gallery:null,
+                info:{
+                    name:null,
+                    dup:null,
+                    start_time:null,
+                    end_time:null
+                },
+                foods:{
+                    genre:null,
+                    cost:{
+                        min:null,
+                        max:null
+                    },
+                    oisii:null
+                }
+    
+            }
+        },
         panel:{
             activeGlobalPanel:'search-panel',
             activeSearchPanel:'genre',
             activeGenre:'all',
             activeInfoPanel:'shisetsu',
-            activePostID:null,//TODO:あとでここに格納するようにつくる
+            activePostID:null,
             query:{
                 food:{
                     spoon:null,
@@ -118,23 +138,21 @@ new Vue({
             if(value == 0) return 'なし';
             else return 'あり';
         },
-        saveGlobalSetting:function(){
-            
-        },
         makeQuery:function(list){
             let queryTmp = '';
             for(key in list){
-                if(list[key] != null){
+                if(list[key] != null && list[key] != false){
                     queryTmp += `&${key}=${list[key]}`;
                 }
             }
             this.panel.query.o[this.panel.activeGenre] = 1;
+            //console.log(queryTmp);
             return queryTmp;
         },
         getAPI:function(){
             let optionQuery = '';
             let settingQuery = '';
-            if(this.panel.activePanel == 'setting'){
+            if(this.panel.activeSearchPanel == 'setting'){
                 switch(this.panel.activeGenre){
                     case 'restroom':
                         optionQuery = this.makeQuery(this.panel.query.restroom);
@@ -147,9 +165,8 @@ new Vue({
                     break;
                 }
             }
-            if(this.panel.activePanel == 'setting'){
-                settingQuery = this.makeQuery(this.panel.query.well);
-            }
+
+            settingQuery = this.makeQuery(this.panel.query.well);
 
             console.log('https://kamata-bfm.nextlav.xyz/data-api/?type='+this.panel.activeGenre+settingQuery+'&o='+this.panel.query.o[this.panel.activeGenre]+optionQuery);
             //取得
@@ -157,9 +174,10 @@ new Vue({
             .get('https://kamata-bfm.nextlav.xyz/data-api/?type='+this.panel.activeGenre+settingQuery+'&o='+this.panel.query.o[this.panel.activeGenre]+optionQuery)
             .then(response => (this.markers = response.data))
         },
-        getThePostData:function(){
+        getThePostData:function(type = this.panel.activeGenre){
+            //console.log('is work');
             axios
-            .get('https://kamata-bfm.nextlav.xyz/wp-json/wp/v2/'+this.panel.activeGenre+'/'+this.panel.activePostID)
+            .get('https://kamata-bfm.nextlav.xyz/wp-json/wp/v2/'+type+'/'+this.panel.activePostID)
             .then(response => (this.thePostData = response.data))
         }
     }

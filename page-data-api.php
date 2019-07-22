@@ -82,9 +82,9 @@ if ( $api_query->have_posts() ) {
             //TODO:その他コンビニ対応まだ
             if(!($_GET['brand'] == get_field('metas')['type']['value']) && $_GET['brand'] != null) continue;
             //修正
-            if(get_field('metas')['atm'] != 0 && $_GET['atm'] == true && $_GET['atm'] != null) continue;
+            if($_GET['atm'] != true && $_GET['atm'] != null) continue;
             //TODO:多分これバグある
-            if(get_field('metas')['eatin'] != 1 && $_GET['eatin'] == true && $_GET['eatin'] != null) continue;
+            if(get_field('metas')['eatin'] != true && $_GET['eatin'] == true && $_GET['eatin'] != null) continue;
         }
         /*==============トイレ条件と合致していないものを省く=================*/
         if($arrayTmp['post_type'] == 'restroom' && $_GET['o'] == 1){
@@ -105,7 +105,7 @@ if ( $api_query->have_posts() ) {
             'lat' => round($gps['lat'],10),
             'lng' => round($gps['lng'],10)
         ];
-        $arrayTmp['eye'] = get_field('eye');
+        $arrayTmp['eye'] = get_field('eye')['sizes']['thumbnail'];
         $arrayTmp['postid'] = get_the_ID();
         /*==========飲食店データ格納（リスト状態）===============*/
         if($arrayTmp['post_type'] == 'food'){
