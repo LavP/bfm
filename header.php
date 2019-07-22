@@ -10,3 +10,4 @@
     <link rel="stylesheet" href="style/reset.css">
     <link rel="stylesheet" href="style/global.min.css">
     <?php wp_head(); ?>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">

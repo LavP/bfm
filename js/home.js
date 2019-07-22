@@ -62,6 +62,11 @@ new Vue({
                         max:null
                     },
                     oisii:null
+                },
+                setubi:{
+                    sekkyaku:null,
+                    "pi-kutime":null,
+                    kuhuu:null
                 }
     
             }
