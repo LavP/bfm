@@ -5,7 +5,7 @@ Template name:トップページ
 
 get_header();
 ?>
-<link rel="stylesheet" href="style/home.min.css">
+<link rel="stylesheet" href="style/index.min.css">
 </head>
 <body>
 	
@@ -44,7 +44,7 @@ get_header();
 					<p class='genre'>{{thePostData.acf.foods.genre}}</p>
 					<h3>{{thePostData.acf.info.name}}</h3>
 					<p class='cost'>{{thePostData.acf.foods.cost.min}}&mdash;{{thePostData.acf.foods.cost.max}}円</p>
-					<p class='time' v-if="thePostData.acf.info.start_time == thePostData.acf.info.end_time}">24時間営業</p>
+					<p class='time' v-if='thePostData.acf.info.start_time == thePostData.acf.info.end_time'>24時間営業</p>
 					<p class='time' v-else>{{thePostData.acf.info.start_time}}&mdash;{{thePostData.acf.info.end_time}}</p>
 					<p class='sougouhyouka'>総合評価<br>
 					<div v-html='star(thePostData.acf.foods.oisii)'></div>
@@ -54,7 +54,7 @@ get_header();
 				<div class='pinPopup' v-if='thePostData.type == "restroom"'>
 					<img :src="thePostData.acf.eye.sizes.thumbnail" :alt="thePostData.acf.eye.sizes.thumbnail">
 					<h3>{{thePostData.acf.info.name}}</h3>
-					<p class='time' v-if="thePostData.acf.info.start_time == thePostData.acf.info.end_time}">24時間営業</p>
+					<p class='time' v-if='thePostData.acf.info.start_time == thePostData.acf.info.end_time'>24時間営業</p>
 					<p class='time' v-else>{{thePostData.acf.info.start_time}}&mdash;{{thePostData.acf.info.end_time}}</p>
 					<p class='sougouhyouka'>総合評価<br>
 					<div v-html='star(thePostData.acf.metas.tukaiyasusa)'></div>
@@ -65,7 +65,7 @@ get_header();
 					<img :src="thePostData.acf.eye.sizes.thumbnail" :alt="thePostData.acf.eye.sizes.thumbnail">
 					<p class='genre'>{{thePostData.acf.metas.type.label}}</p>
 					<h3>{{thePostData.acf.info.name}}</h3>
-					<p class='time' v-if="thePostData.acf.info.start_time == thePostData.acf.info.end_time}">24時間営業</p>
+					<p class='time' v-if='thePostData.acf.info.start_time == thePostData.acf.info.end_time'>24時間営業</p>
 					<p class='time' v-else>{{thePostData.acf.info.start_time}}&mdash;{{thePostData.acf.info.end_time}}</p>
 					<button @click='[panel.activeGlobalPanel = "search-panel",infoWinOpen = false]'>もどる</button>
 				</div>
@@ -73,7 +73,7 @@ get_header();
 					<img :src="thePostData.acf.eye.sizes.thumbnail" :alt="thePostData.acf.eye.sizes.thumbnail">
 					<p class='genre'>{{thePostData.acf.genre[0]}}</p>
 					<h3>{{thePostData.acf.info.name}}</h3>
-					<p class='time' v-if="thePostData.acf.info.start_time == thePostData.acf.info.end_time}">24時間営業</p>
+					<p class='time' v-if='thePostData.acf.info.start_time == thePostData.acf.info.end_time'>24時間営業</p>
 					<p class='time' v-else>{{thePostData.acf.info.start_time}}&mdash;{{thePostData.acf.info.end_time}}</p>
 					<p class='cost'>{{thePostData.acf.cost.min}}&mdash;{{thePostData.acf.cost.max}}円</p>
 					<p class='sougouhyouka'>総合評価<br>
@@ -799,7 +799,7 @@ get_header();
 <!--このページ固有のScript-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
 <script src="js/vue-google-maps.js"></script>
-<script><?php include('js/home.js');?></script>
+<script><?php include('js/index.js');?></script>
 
 <?php wp_footer(); ?>
 </body>
