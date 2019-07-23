@@ -170,9 +170,10 @@ new Vue({
         },
         getThePostData:function(type = this.panel.activeGenre){
             //console.log('is work');
+            let tmp;
             axios
             .get('https://kamata-bfm.nextlav.xyz/wp-json/wp/v2/'+type+'/'+this.panel.activePostID)
-            .then(response => (this.thePostData = response.data))
+            .then(response => (this.thePostData = response.data));
         },
         star:function(get){
             var kuro = Math.floor(get/1);
@@ -192,6 +193,13 @@ new Vue({
                 rhtml+= '<img src="images/'+hosibox[i]+'.svg" alt="★">';
             };
             return rhtml;
+        },
+        removeWidthr:function(){
+            const target = document.querySelectorAll('.hasPhoto > div');
+            //debugger;
+            for(let i = 0;i < target.length;i++){
+                target[i].setAttribute('style','');
+            }
         }
     }
 });

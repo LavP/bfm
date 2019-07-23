@@ -479,10 +479,15 @@ get_header();
 
 	<!--詳細情報パネル-->
 	<section id="infoPanel" v-show='panel.activeGlobalPanel == "info"'>
+		<!--タブエリア-->
 		<div class="tabArea">
 			<button @click='panel.activeInfoPanel = "shisetsu"' :class='{ active : panel.activeInfoPanel == "shisetsu" }'>施設情報</button>
-			<button @click='panel.activeInfoPanel = "photo"' :class='{ active : panel.activeInfoPanel == "photo" }'>写真</button>
+			<button @click='[
+				panel.activeInfoPanel = "photo",
+				removeWidthr()
+			]' :class='{ active : panel.activeInfoPanel == "photo" }'>写真</button>
 		</div>
+		<!--情報エリア-->
 		<section class="shisetsuArea" v-show='panel.activeInfoPanel == "shisetsu"'>
 			施設のパネル
 			<dl>
@@ -678,119 +683,10 @@ get_header();
 				</div>
 			</dl>
 		</section>
+		<!--写真エリア-->
 		<section class="photoArea" v-show='panel.activeInfoPanel == "photo"'>
 			<div v-if='thePostData.acf.gallery != ""' v-html='thePostData.acf.gallery' class='hasPhoto'></div>
-			<div v-if='thePostData.acf.gallery == ""' class='hasntPhoto'>写真がありません</div>
-				</div>
-				<div v-if='
-				thePostData.type != "food" && 
-				thePostData.type != "restroom" && 
-				thePostData.type != "convenience" && 
-				thePostData.type == "amusement"'>
-					<dt>楽しめるための工夫</dt>
-					<dd><p>{{thePostData.acf.setubi.kuhuu}}</p></dd>
-				</div>
-				<div v-if='
-				thePostData.type == "food" && 
-				thePostData.type != "restroom" && 
-				thePostData.type != "convenience" && 
-				thePostData.type == "amusement"'>
-					<dt>公式HP</dt>
-					<dd><a href="thePostData.link" target="_blank">{{thePostData.link}}</dd>
-				</div>
-			</dl>
-		</section>
-		<section class="photoArea" v-show='panel.activeInfoPanel == "photo"'>
-			<div v-if='thePostData.acf.gallery != ""' v-html='thePostData.acf.gallery' class='hasPhoto'></div>
-			<div v-if='thePostData.acf.gallery == ""' class='hasntPhoto'>写真がありません</div>
-				</div>
-				<div v-if='
-				thePostData.type != "food" && 
-				thePostData.type != "restroom" && 
-				thePostData.type != "convenience" && 
-				thePostData.type == "amusement"'>
-					<dt>楽しめるための工夫</dt>
-					<dd><p>{{thePostData.acf.setubi.kuhuu}}</p></dd>
-				</div>
-				<div v-if='
-				thePostData.type == "food" && 
-				thePostData.type != "restroom" && 
-				thePostData.type != "convenience" && 
-				thePostData.type == "amusement"'>
-					<dt>公式HP</dt>
-					<dd><a href="thePostData.link" target="_blank">{{thePostData.link}}</dd>
-				</div>
-			</dl>
-		</section>
-		<section class="photoArea" v-show='panel.activeInfoPanel == "photo"'>
-			<div v-if='thePostData.acf.gallery != ""' v-html='thePostData.acf.gallery' class='hasPhoto'></div>
-			<div v-if='thePostData.acf.gallery == ""' class='hasntPhoto'>写真がありません</div>
-				</div>
-				<div v-if='
-				thePostData.type != "food" && 
-				thePostData.type != "restroom" && 
-				thePostData.type != "convenience" && 
-				thePostData.type == "amusement"'>
-					<dt>楽しめるための工夫</dt>
-					<dd><p>{{thePostData.acf.setubi.kuhuu}}</p></dd>
-				</div>
-				<div v-if='
-				thePostData.type == "food" && 
-				thePostData.type != "restroom" && 
-				thePostData.type != "convenience" && 
-				thePostData.type == "amusement"'>
-					<dt>公式HP</dt>
-					<dd><a href="thePostData.link" target="_blank">{{thePostData.link}}</dd>
-				</div>
-			</dl>
-		</section>
-		<section class="photoArea" v-show='panel.activeInfoPanel == "photo"'>
-			<div v-if='thePostData.acf.gallery != ""' v-html='thePostData.acf.gallery' class='hasPhoto'></div>
-			<div v-if='thePostData.acf.gallery == ""' class='hasntPhoto'>写真がありません</div>
-				</div>
-				<div v-if='
-				thePostData.type != "food" && 
-				thePostData.type != "restroom" && 
-				thePostData.type != "convenience" && 
-				thePostData.type == "amusement"'>
-					<dt>楽しめるための工夫</dt>
-					<dd><p>{{thePostData.acf.setubi.kuhuu}}</p></dd>
-				</div>
-				<div v-if='
-				thePostData.type == "food" && 
-				thePostData.type != "restroom" && 
-				thePostData.type != "convenience" && 
-				thePostData.type == "amusement"'>
-					<dt>公式HP</dt>
-					<dd><a href="thePostData.link" target="_blank">{{thePostData.link}}</dd>
-				</div>
-			</dl>
-		</section>
-		<section class="photoArea" v-show='panel.activeInfoPanel == "photo"'>
-			<div v-if='thePostData.acf.gallery != ""' v-html='thePostData.acf.gallery' class='hasPhoto'></div>
-			<div v-if='thePostData.acf.gallery == ""' class='hasntPhoto'>写真がありません</div>
-				</div>
-				<div v-if='
-				thePostData.type != "food" && 
-				thePostData.type != "restroom" && 
-				thePostData.type != "convenience" && 
-				thePostData.type == "amusement"'>
-					<dt>楽しめるための工夫</dt>
-					<dd><p>{{thePostData.acf.setubi.kuhuu}}</p></dd>
-				</div>
-				<div v-if='
-				thePostData.type == "food" && 
-				thePostData.type != "restroom" && 
-				thePostData.type != "convenience" && 
-				thePostData.type == "amusement"'>
-					<dt>公式HP</dt>
-					<dd><a href="thePostData.link" target="_blank">{{thePostData.link}}</dd>
-				</div>
-			</dl>
-		</section>
-		<section class="photoArea" v-show='panel.activeInfoPanel == "photo"'>
-			<div v-if='thePostData.acf.gallery != ""' v-html='thePostData.acf.gallery' class='hasPhoto'></div>
-			<div v-if='thePostData.acf.gallery == ""' class='hasntPhoto'>写真がありません</div>
+			<div v-else class='hasntPhoto'>写真がありません</div>
 		</section>
 	</section>
 </main>
