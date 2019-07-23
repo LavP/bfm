@@ -44,18 +44,20 @@ get_header();
 					<p class='genre'>{{thePostData.acf.foods.genre}}</p>
 					<h3>{{thePostData.acf.info.name}}</h3>
 					<p class='cost'>{{thePostData.acf.foods.cost.min}}&mdash;{{thePostData.acf.foods.cost.max}}円</p>
-					<p class='time'>{{thePostData.acf.info.start_time}}&mdash;{{thePostData.acf.info.end_time}}</p>
+					<p class='time' v-if="thePostData.acf.info.start_time == thePostData.acf.info.end_time}">24時間営業</p>
+					<p class='time' v-else>{{thePostData.acf.info.start_time}}&mdash;{{thePostData.acf.info.end_time}}</p>
 					<p class='sougouhyouka'>総合評価<br>
-					<div class='starArea' v-html='star(thePostData.acf.foods.oisii)'></div>
+					<div v-html='star(thePostData.acf.foods.oisii)'></div>
 					</p>
 					<button @click='[panel.activeGlobalPanel = "search-panel",infoWinOpen = false]'>もどる</button>
 				</div>
 				<div class='pinPopup' v-if='thePostData.type == "restroom"'>
 					<img :src="thePostData.acf.eye.sizes.thumbnail" :alt="thePostData.acf.eye.sizes.thumbnail">
 					<h3>{{thePostData.acf.info.name}}</h3>
-					<p class='time'>{{thePostData.acf.info.start_time}}&mdash;{{thePostData.acf.info.end_time}}</p>
+					<p class='time' v-if="thePostData.acf.info.start_time == thePostData.acf.info.end_time}">24時間営業</p>
+					<p class='time' v-else>{{thePostData.acf.info.start_time}}&mdash;{{thePostData.acf.info.end_time}}</p>
 					<p class='sougouhyouka'>総合評価<br>
-					<div class='starArea' v-html='star(thePostData.acf.metas.tukaiyasusa)'></div>
+					<div v-html='star(thePostData.acf.metas.tukaiyasusa)'></div>
 					</p>
 					<button @click='[panel.activeGlobalPanel = "search-panel",infoWinOpen = false]'>もどる</button>
 				</div>
@@ -63,17 +65,19 @@ get_header();
 					<img :src="thePostData.acf.eye.sizes.thumbnail" :alt="thePostData.acf.eye.sizes.thumbnail">
 					<p class='genre'>{{thePostData.acf.metas.type.label}}</p>
 					<h3>{{thePostData.acf.info.name}}</h3>
-					<p class='time'>{{thePostData.acf.info.start_time}}&mdash;{{thePostData.acf.info.end_time}}</p>
+					<p class='time' v-if="thePostData.acf.info.start_time == thePostData.acf.info.end_time}">24時間営業</p>
+					<p class='time' v-else>{{thePostData.acf.info.start_time}}&mdash;{{thePostData.acf.info.end_time}}</p>
 					<button @click='[panel.activeGlobalPanel = "search-panel",infoWinOpen = false]'>もどる</button>
 				</div>
 				<div class='pinPopup' v-if='thePostData.type == "amusement"'>
 					<img :src="thePostData.acf.eye.sizes.thumbnail" :alt="thePostData.acf.eye.sizes.thumbnail">
 					<p class='genre'>{{thePostData.acf.genre[0]}}</p>
 					<h3>{{thePostData.acf.info.name}}</h3>
-					<p class='time'>{{thePostData.acf.info.start_time}}&mdash;{{thePostData.acf.info.end_time}}</p>
+					<p class='time' v-if="thePostData.acf.info.start_time == thePostData.acf.info.end_time}">24時間営業</p>
+					<p class='time' v-else>{{thePostData.acf.info.start_time}}&mdash;{{thePostData.acf.info.end_time}}</p>
 					<p class='cost'>{{thePostData.acf.cost.min}}&mdash;{{thePostData.acf.cost.max}}円</p>
 					<p class='sougouhyouka'>総合評価<br>
-					<div class='starArea' v-html='star(thePostData.acf.metas.tukaiyasusa)'></div>
+					<div v-html='star(thePostData.acf.metas.tukaiyasusa)'></div>
 					</p>
 					<button @click='[panel.activeGlobalPanel = "search-panel",infoWinOpen = false]'>もどる</button>
 				</div>
@@ -247,7 +251,7 @@ get_header();
 						<dl class="metas">
 							<dt class="sougouhyouka">おいしさ</dt>
 							<dd class="sougouhyouka">
-								<div class='starArea' v-html='star(pin.metas.hyouka)'></div>
+								<span v-for='n in pin.metas.hyouka'>★</span>
 							</dd>
 							<dd class="cost none">値段</dd>
 							<dt class="cost">
@@ -265,7 +269,7 @@ get_header();
 						<dl class="metas">
 						<dt class="sougouhyouka">たのしさ</dt>
 							<dd class="sougouhyouka">
-								<div class='starArea' v-html='star(pin.metas.hyouka)'></div>
+								<span v-for='n in pin.metas.hyouka'>★</span>
 							</dd>
 							<dd class="cost none">値段</dd>
 							<dt class="cost">
@@ -548,7 +552,7 @@ get_header();
 				thePostData.type != "amusement"'>
 					<dt>使いやすさ</dt>
 					<dd>
-						<div class='starArea' v-html='star(thePostData.acf.metas.tukaiyasusa)'></div>
+						<div v-html='star(thePostData.acf.metas.tukaiyasusa)'></div>
 					</dd>
 				</div>
 				<div v-if='
@@ -580,7 +584,7 @@ get_header();
 				thePostData.type != "amusement"'>
 					<dt>店員さん</dt>
 					<dd>
-					<div class='starArea' v-html='star(thePostData.acf.metas.smile)'></div>
+					<div v-html='star(thePostData.acf.metas.smile)'></div>
 					</dd>
 				</div>
 				<div v-if='
@@ -643,7 +647,7 @@ get_header();
 				thePostData.type == "amusement"'>
 					<dt>接客</dt>
 					<dd>
-						<div class='starArea' v-html='star(thePostData.acf.metas.tukaiyasusa)'></div>
+						<div v-html='star(thePostData.acf.metas.tukaiyasusa)'></div>
 					</dd>
 					
 				</div>
