@@ -175,14 +175,11 @@ new Vue({
             .then(response => (this.thePostData = response.data))
         },
         star:function(get){
-            //debugger;
             var kuro = Math.floor(get/1);
             var han = get%1;
             var hosibox = [];
             var rhtml = '';
-            //debugger;
             for(let i = 0;i < 5;i++){
-                //debugger;
                 if(kuro != 0){
                     hosibox[i] = 'star';
                     kuro--;
@@ -193,10 +190,7 @@ new Vue({
                     hosibox[i] = 'star_border';
                 }
                 rhtml+= '<img src="images/'+hosibox[i]+'.svg" alt="★">';
-                //debugger;
             };
-            //debugger;
-            console.log(rhtml);
             return rhtml;
         }
     }
