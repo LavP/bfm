@@ -114,17 +114,6 @@ new Vue({
     methods: {
         toggleInfoWindow: function (marker, idx) {
             this.infoWindowPos = marker.gps_pos;
-            /*
-            this.infoContent = {
-                name:marker.name,
-                minCost:marker.metas.cost.min,
-                maxCost:marker.metas.cost.max,
-                sougouhyouka:marker.metas.sougouhyouka,
-                photo:marker.eye,
-                dup:marker.dup
-            };
-            */
-
             //check if its the same marker that was selected if yes toggle
             if (this.currentMidx == idx) {
                 //this.infoWinOpen = !this.infoWinOpen;
@@ -184,6 +173,31 @@ new Vue({
             axios
             .get('https://kamata-bfm.nextlav.xyz/wp-json/wp/v2/'+type+'/'+this.panel.activePostID)
             .then(response => (this.thePostData = response.data))
+        },
+        star:function(get){
+            //debugger;
+            var kuro = Math.floor(get/1);
+            var han = get%1;
+            var hosibox = [];
+            var rhtml = '';
+            //debugger;
+            for(let i = 0;i < 5;i++){
+                //debugger;
+                if(kuro != 0){
+                    hosibox[i] = 'star';
+                    kuro--;
+                }else if(han == 0.5){
+                    hosibox[i] = 'star_half';
+                    han = 0;
+                }else{
+                    hosibox[i] = 'star_border';
+                }
+                rhtml+= '<img src="images/'+hosibox[i]+'.svg" alt="★">';
+                //debugger;
+            };
+            //debugger;
+            console.log(rhtml);
+            return rhtml;
         }
     }
 });

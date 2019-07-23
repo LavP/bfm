@@ -4,6 +4,14 @@
     }
 } 
 
+.starArea{
+    display: flex;
+    justify-content: space-around;
+    img{
+        width: 1em;
+        height: auto;
+    }
+}
 
 .gm-ui-hover-effect{
     transform: translateX(100vh);

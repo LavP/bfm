@@ -46,72 +46,7 @@ get_header();
 					<p class='cost'>{{thePostData.acf.foods.cost.min}}&mdash;{{thePostData.acf.foods.cost.max}}円</p>
 					<p class='time'>{{thePostData.acf.info.start_time}}&mdash;{{thePostData.acf.info.end_time}}</p>
 					<p class='sougouhyouka'>総合評価<br>
-					<i class="material-icons" v-if='thePostData.acf.foods.oisii == 0'>
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-					<i class="material-icons" v-if='thePostData.acf.foods.oisii == 0.5'>
-					<img src="images/star_half.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-					<i class="material-icons" v-if='thePostData.acf.foods.oisii == 1'>
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-					<i class="material-icons" v-if='thePostData.acf.foods.oisii == 1.5'>
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star_half.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-					<i class="material-icons" v-if='thePostData.acf.metas.tukaiyasusa == 2'>
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-					<i class="material-icons" v-if='thePostData.acf.metas.tukaiyasusa == 2.5'>
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star_half.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-					<i class="material-icons" v-if='thePostData.acf.metas.tukaiyasusa == 3'>
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-					<i class="material-icons" v-if='thePostData.acf.foods.oisiiaku == 3.5'>
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star_half.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-					<i class="material-icons" v-if='thePostData.acf.foods.oisii == 4'>
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-					<i class="material-icons" v-if='thePostData.acf.foods.oisii == 4.5'>
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star_half.svg" alt="★" class="star_lv"></i>
-					<i class="material-icons" v-if='thePostData.acf.foods.oisii == 5'>
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv"></i>
+					<div class='starArea' v-html='star(thePostData.acf.foods.oisii)'></div>
 					</p>
 					<button @click='[panel.activeGlobalPanel = "search-panel",infoWinOpen = false]'>もどる</button>
 				</div>
@@ -120,72 +55,7 @@ get_header();
 					<h3>{{thePostData.acf.info.name}}</h3>
 					<p class='time'>{{thePostData.acf.info.start_time}}&mdash;{{thePostData.acf.info.end_time}}</p>
 					<p class='sougouhyouka'>総合評価<br>
-					<i class="material-icons" v-if='thePostData.acf.metas.tukaiyasusa == 0'>
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-					<i class="material-icons" v-if='thePostData.acf.metas.tukaiyasusa == 0.5'>
-					<img src="images/star_half.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-					<i class="material-icons" v-if='thePostData.acf.metas.tukaiyasusa == 1'>
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-					<i class="material-icons" v-if='thePostData.acf.metas.tukaiyasusa == 1.5'>
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star_half.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-					<i class="material-icons" v-if='thePostData.acf.metas.tukaiyasusa == 2'>
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-					<i class="material-icons" v-if='thePostData.acf.metas.tukaiyasusa == 2.5'>
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star_half.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-					<i class="material-icons" v-if='thePostData.acf.metas.tukaiyasusa == 3'>
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-					<i class="material-icons" v-if='thePostData.acf.metas.tukaiyasusaaku == 3.5'>
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star_half.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-					<i class="material-icons" v-if='thePostData.acf.metas.tukaiyasusa == 4'>
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-					<i class="material-icons" v-if='thePostData.acf.metas.tukaiyasusa == 4.5'>
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star_half.svg" alt="★" class="star_lv"></i>
-					<i class="material-icons" v-if='thePostData.acf.metas.tukaiyasusa == 5'>
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv"></i>
+					<div class='starArea' v-html='star(thePostData.acf.metas.tukaiyasusa)'></div>
 					</p>
 					<button @click='[panel.activeGlobalPanel = "search-panel",infoWinOpen = false]'>もどる</button>
 				</div>
@@ -203,72 +73,7 @@ get_header();
 					<p class='time'>{{thePostData.acf.info.start_time}}&mdash;{{thePostData.acf.info.end_time}}</p>
 					<p class='cost'>{{thePostData.acf.cost.min}}&mdash;{{thePostData.acf.cost.max}}円</p>
 					<p class='sougouhyouka'>総合評価<br>
-					<i class="material-icons" v-if='thePostData.acf.sougouhyouka == 0'>
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-					<i class="material-icons" v-if='thePostData.acf.sougouhyouka == 0.5'>
-					<img src="images/star_half.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-					<i class="material-icons" v-if='thePostData.acf.sougouhyouka == 1'>
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-					<i class="material-icons" v-if='thePostData.acf.sougouhyouka == 1.5'>
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star_half.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-					<i class="material-icons" v-if='thePostData.acf.sougouhyouka == 2'>
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-					<i class="material-icons" v-if='thePostData.acf.sougouhyouka == 2.5'>
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star_half.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-					<i class="material-icons" v-if='thePostData.acf.sougouhyouka == 3'>
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-					<i class="material-icons" v-if='thePostData.acf.setubi.sekkyaku == 3.5'>
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star_half.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-					<i class="material-icons" v-if='thePostData.acf.sougouhyouka == 4'>
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-					<i class="material-icons" v-if='thePostData.acf.sougouhyouka == 4.5'>
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star_half.svg" alt="★" class="star_lv"></i>
-					<i class="material-icons" v-if='thePostData.acf.sougouhyouka == 5'>
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv">
-					<img src="images/star.svg" alt="★" class="star_lv"></i>
+					<div class='starArea' v-html='star(thePostData.acf.metas.tukaiyasusa)'></div>
 					</p>
 					<button @click='[panel.activeGlobalPanel = "search-panel",infoWinOpen = false]'>もどる</button>
 				</div>
@@ -442,7 +247,7 @@ get_header();
 						<dl class="metas">
 							<dt class="sougouhyouka">おいしさ</dt>
 							<dd class="sougouhyouka">
-								<span v-for='n in pin.metas.hyouka'>★</span>
+								<div class='starArea' v-html='star(pin.metas.hyouka)'></div>
 							</dd>
 							<dd class="cost none">値段</dd>
 							<dt class="cost">
@@ -460,7 +265,7 @@ get_header();
 						<dl class="metas">
 						<dt class="sougouhyouka">たのしさ</dt>
 							<dd class="sougouhyouka">
-								<span v-for='n in pin.metas.hyouka'>★</span>
+								<div class='starArea' v-html='star(pin.metas.hyouka)'></div>
 							</dd>
 							<dd class="cost none">値段</dd>
 							<dt class="cost">
@@ -743,72 +548,7 @@ get_header();
 				thePostData.type != "amusement"'>
 					<dt>使いやすさ</dt>
 					<dd>
-						<i class="material-icons" v-if='thePostData.acf.metas.tukaiyasusa == 0'>
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-						<i class="material-icons" v-if='thePostData.acf.metas.tukaiyasusa == 0.5'>
-						<img src="images/star_half.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-						<i class="material-icons" v-if='thePostData.acf.metas.tukaiyasusa == 1'>
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-						<i class="material-icons" v-if='thePostData.acf.metas.tukaiyasusa == 1.5'>
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star_half.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-						<i class="material-icons" v-if='thePostData.acf.metas.tukaiyasusa == 2'>
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-						<i class="material-icons" v-if='thePostData.acf.metas.tukaiyasusa == 2.5'>
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star_half.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-						<i class="material-icons" v-if='thePostData.acf.metas.tukaiyasusa == 3'>
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-						<i class="material-icons" v-if='thePostData.acf.metas.tukaiyasusa == 3.5'>
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star_half.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-						<i class="material-icons" v-if='thePostData.acf.metas.tukaiyasusa == 4'>
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-						<i class="material-icons" v-if='thePostData.acf.metas.tukaiyasusa == 4.5'>
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star_half.svg" alt="★" class="star_lv"></i>
-						<i class="material-icons" v-if='thePostData.acf.metas.tukaiyasusa == 5'>
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv"></i>
+						<div class='starArea' v-html='star(thePostData.acf.metas.tukaiyasusa)'></div>
 					</dd>
 				</div>
 				<div v-if='
@@ -840,72 +580,7 @@ get_header();
 				thePostData.type != "amusement"'>
 					<dt>店員さん</dt>
 					<dd>
-						<i class="material-icons" v-if='thePostData.acf.metas.smile == 0'>
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-						<i class="material-icons" v-if='thePostData.acf.metas.smile == 0.5'>
-						<img src="images/star_half.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-						<i class="material-icons" v-if='thePostData.acf.metas.smile == 1'>
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-						<i class="material-icons" v-if='thePostData.acf.metas.smile == 1.5'>
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star_half.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-						<i class="material-icons" v-if='thePostData.acf.metas.smile == 2'>
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-						<i class="material-icons" v-if='thePostData.acf.metas.smile == 2.5'>
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star_half.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-						<i class="material-icons" v-if='thePostData.acf.metas.smile == 3'>
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-						<i class="material-icons" v-if='thePostData.acf.metas.smile == 3.5'>
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star_half.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-						<i class="material-icons" v-if='thePostData.acf.metas.smile == 4'>
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-						<i class="material-icons" v-if='thePostData.acf.metas.smile == 4.5'>
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star_half.svg" alt="★" class="star_lv"></i>
-						<i class="material-icons" v-if='thePostData.acf.metas.smile == 5'>
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv"></i>
+					<div class='starArea' v-html='star(thePostData.acf.metas.smile)'></div>
 					</dd>
 				</div>
 				<div v-if='
@@ -968,72 +643,7 @@ get_header();
 				thePostData.type == "amusement"'>
 					<dt>接客</dt>
 					<dd>
-						<i class="material-icons" v-if='thePostData.acf.setubi.sekkyaku == 0'>
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-						<i class="material-icons" v-if='thePostData.acf.setubi.sekkyaku == 0.5'>
-						<img src="images/star_half.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-						<i class="material-icons" v-if='thePostData.acf.setubi.sekkyaku == 1'>
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-						<i class="material-icons" v-if='thePostData.acf.setubi.sekkyaku == 1.5'>
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star_half.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-						<i class="material-icons" v-if='thePostData.acf.setubi.sekkyaku == 2'>
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-						<i class="material-icons" v-if='thePostData.acf.setubi.sekkyaku == 2.5'>
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star_half.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-						<i class="material-icons" v-if='thePostData.acf.setubi.sekkyaku == 3'>
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-						<i class="material-icons" v-if='thePostData.acf.setubi.sekkyaku == 3.5'>
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star_half.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-						<i class="material-icons" v-if='thePostData.acf.setubi.sekkyaku == 4'>
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star_border.svg" alt="★" class="star_lv"></i>
-						<i class="material-icons" v-if='thePostData.acf.setubi.sekkyaku == 4.5'>
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star_half.svg" alt="★" class="star_lv"></i>
-						<i class="material-icons" v-if='thePostData.acf.setubi.sekkyaku == 5'>
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv">
-						<img src="images/star.svg" alt="★" class="star_lv"></i>
+						<div class='starArea' v-html='star(thePostData.acf.metas.tukaiyasusa)'></div>
 					</dd>
 					
 				</div>
