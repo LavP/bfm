@@ -65,9 +65,13 @@ new Vue({
                 },
                 setubi:{
                     sekkyaku:null,
-                    "pi-kutime":null,
                     kuhuu:null
-                }
+                },
+                metas:{
+                    tukaiyasusa:null,
+                    smile:null
+                },
+                site:null
     
             }
         },
@@ -81,7 +85,7 @@ new Vue({
                 food:{
                     spoon:null,
                     folk:null,
-                    yosan:null,
+                    yosan:500,
                     genre:null
                 },
                 restroom:{
@@ -95,9 +99,9 @@ new Vue({
                     eatin:null
                 },
                 well:{
-                    well_type:null,
-                    min_width:null,
-                    max_height:null
+                    well_type:'hand',
+                    min_width:0.8,
+                    max_height:10
                 },
                 o:{
                     all:0,
@@ -160,6 +164,25 @@ new Vue({
                 }
             }
 
+            switch(this.panel.activeGenre){
+                //ジャンルごとに色を変える処理
+                case 'restroom':
+                    document.documentElement.style.setProperty('--genreColor','#3DBFFF');
+                break;
+                case 'food':
+                    document.documentElement.style.setProperty('--genreColor','#E8A02B');
+                break;
+                case 'convenience':
+                    document.documentElement.style.setProperty('--genreColor','#7AC157');
+                break;
+                case 'amusement':
+                    document.documentElement.style.setProperty('--genreColor','#AFC429');
+                break;
+                case 'all':
+                    document.documentElement.style.setProperty('--genreColor','#707070');
+                break;
+            }
+
             settingQuery = this.makeQuery(this.panel.query.well);
 
             console.log('https://kamata-bfm.nextlav.xyz/data-api/?type='+this.panel.activeGenre+settingQuery+'&o='+this.panel.query.o[this.panel.activeGenre]+optionQuery);
@@ -176,6 +199,8 @@ new Vue({
             .then(response => (this.thePostData = response.data));
         },
         star:function(get){
+            //get = Number(get);
+            console.log(get);
             var kuro = Math.floor(get/1);
             var han = get%1;
             var hosibox = [];
@@ -194,9 +219,9 @@ new Vue({
             };
             return rhtml;
         },
-        removeWidthr:function(){
+        removeWidth:function(){
+            console.log('resized');
             const target = document.querySelectorAll('.hasPhoto > div');
-            //debugger;
             for(let i = 0;i < target.length;i++){
                 target[i].setAttribute('style','');
             }

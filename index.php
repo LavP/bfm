@@ -39,11 +39,12 @@ get_header();
 			:position="infoWindowPos"
 			:opened="infoWinOpen"
 			@closeclick="infoWinOpen=false">
+			<!--TODO:パネルで仕様する変数の点検-->
 				<div class='pinPopup' v-if='thePostData.type == "food"'>
 					<img :src="thePostData.acf.eye.sizes.thumbnail" :alt="thePostData.acf.eye.sizes.thumbnail">
 					<p class='genre'>{{thePostData.acf.foods.genre}}</p>
 					<h3>{{thePostData.acf.info.name}}</h3>
-					<p class='cost'>{{thePostData.acf.foods.cost.min}}&mdash;{{thePostData.acf.foods.cost.max}}円</p>
+					<p class='cost'>約{{thePostData.acf.foods.cost.min}}円&nbsp;&sim;&nbsp;{{thePostData.acf.foods.cost.max}}円程</p>
 					<p class='time' v-if='thePostData.acf.info.start_time == thePostData.acf.info.end_time'>24時間営業</p>
 					<p class='time' v-else>{{thePostData.acf.info.start_time}}&mdash;{{thePostData.acf.info.end_time}}</p>
 					<p class='sougouhyouka'>総合評価<br>
@@ -57,7 +58,8 @@ get_header();
 					<p class='time' v-if='thePostData.acf.info.start_time == thePostData.acf.info.end_time'>24時間営業</p>
 					<p class='time' v-else>{{thePostData.acf.info.start_time}}&mdash;{{thePostData.acf.info.end_time}}</p>
 					<p class='sougouhyouka'>総合評価<br>
-					<div class='starArea' v-html='star(thePostData.acf.metas.tukaiyasusa)'></div>
+					<!--TODO:ここがトイレが出ない原因-->
+					<!--<div class='starArea' v-html='star(thePostData.acf.metas.tukaiyasusa)'></div>-->
 					</p>
 					<button @click='[panel.activeGlobalPanel = "search-panel",infoWinOpen = false]'>もどる</button>
 				</div>
@@ -74,10 +76,10 @@ get_header();
 					<p class='genre'>{{thePostData.acf.genre[0]}}</p>
 					<h3>{{thePostData.acf.info.name}}</h3>
 					<p class='time' v-if='thePostData.acf.info.start_time == thePostData.acf.info.end_time'>24時間営業</p>
-					<p class='time' v-else>{{thePostData.acf.info.start_time}}&mdash;{{thePostData.acf.info.end_time}}</p>
-					<p class='cost'>{{thePostData.acf.cost.min}}&mdash;{{thePostData.acf.cost.max}}円</p>
+					<p class='time' v-else>{{thePostData.acf.info.start_time}}&nbsp;&mdash;&nbsp;{{thePostData.acf.info.end_time}}</p>
+					<p class='cost'>約{{thePostData.acf.cost.min}}円&sim;{{thePostData.acf.cost.max}}円程</p>
 					<p class='sougouhyouka'>総合評価<br>
-					<div class='starArea' v-html='star(thePostData.acf.metas.tukaiyasusa)'></div>
+					<div class='starArea' v-html='star(thePostData.acf.setubi.sougouhyouka)'></div>
 					</p>
 					<button @click='[panel.activeGlobalPanel = "search-panel",infoWinOpen = false]'>もどる</button>
 				</div>
@@ -98,7 +100,7 @@ get_header();
 	id='global-setting'
 	v-show='panel.activeGlobalPanel == "search-panel" && panel.activeSearchPanel == "genre"'
 	@click='panel.activeGlobalPanel = "global-setting"'
-	>⚙</button>
+	><img src="images/setting.svg" alt="⚙"></button>
 
 	<!--グローバル設定パネル-->
 	<section
@@ -107,51 +109,56 @@ get_header();
 		<header>
 			<button
 			class="back"
-			@click='[panel.activeGlobalPanel = "search-panel"]'>⬅</button>
+			@click='[panel.activeGlobalPanel = "search-panel"]'><img src="images/back.svg" alt="⬅"></button>
 			<h2>車椅子設定</h2>
 			<button
 			class="diside"
 			@click='[
 				panel.activeGlobalPanel = "search-panel"
-			]'>✅</button>
+			]'><img src="images/diside.svg" alt="✅"></button>
 		</header>
 		<dl>
 			<dt>車椅子の横幅</dt>
-			<dd>
+			<dd class='range'>
+				<span>{{panel.query.well.min_width}}m</span>
 				<input 
 				type="range" 
 				list="min_width" 
 				name="min_width" 
 				v-model='panel.query.well.min_width'
-				min="0.5" max="2" step="0.1">
-				<span>{{panel.query.well.min_width}}</span>
+				min="0.5" max="1.5" step="0.1">
+				
 			</dd>
-			<dt>どれくらいの高さまで<br>自力でこえられるか</dt>
-			<dd>
+			<dt class="yyheight">どれくらいの高さまで<br>自力でこえられるか</dt>
+			<dd class='range'>
+				<span>{{panel.query.well.max_height}}cm</span>
 				<input 
 				type="range" 
 				list="max_height" 
 				name="max_height" 
 				v-model='panel.query.well.max_height'
 				min="0" max="20" step="1">
-				<span>{{panel.query.well.max_height}}</span>
 			</dd>
 			<dt>車椅子の種類</dt>
-			<dd>
+			<dd class='toggle'>
 				<input 
 				type="radio" 
 				name="well_type" 
 				id="syudou" 
 				v-model='panel.query.well.well_type' 
 				value='hand'>
-				<label for="syudou">手動</label>
+				<label
+				for="syudou"
+				:class='{ checkin : panel.query.well.well_type == "hand" }'>手動</label>
 				<input 
 				type="radio" 
 				name="well_type" 
 				id="elec" 
 				v-model='panel.query.well.well_type' 
 				value='elec'>
-				<label for="elec">電動</label>
+				<label
+				for="elec"
+				:class='{ checkin : panel.query.well.well_type == "elec" }'>電動</label>
 			</dd>
 		</dl>
 	</section>
@@ -171,7 +178,8 @@ get_header();
 					@click='[
 						panel.activeGenre = "restroom",
 						panel.activeSearchPanel = "list",
-						getAPI()]'>
+						getAPI(),
+						document.documentElement.style.setProperty("--genreColor","#3DBFFF")]'>
 						<img src="images/pin/toire-C.svg" alt="トイレ">
 						<p>トイレ</p>
 					</button>
@@ -212,7 +220,7 @@ get_header();
 						panel.activeGenre = "all",
 						panel.activeSearchPanel = "list",
 						getAPI()]'>
-						<img src="images/pin/mic-C.svg" alt="すべて">
+						<img src="images/all.svg" alt="すべて">
 						<p>すべて</p>
 					</button>
 				</li>
@@ -224,13 +232,14 @@ get_header();
 			<header>
 				<button
 				class="back"
-				@click='panel.activeSearchPanel = "genre"'>⬅</button>
+				@click='panel.activeSearchPanel = "genre"'><img src="images/back.svg" alt="⬅"></button>
 				<h2>リスト</h2>
 				<button
 				class="setting"
 				@click='panel.activeSearchPanel = "setting"'
-				v-show='panel.activeGenre != "all" && panel.activeGenre != "amusement"'>⚙</button>
+				v-show='panel.activeGenre != "all" && panel.activeGenre != "amusement"'><img src="images/setting.svg" alt="⚙"></button>
 			</header>
+			<!--TODO:リストにアイコンつける-->
 			<ul>
 				<li
 				v-for='pin in markers'
@@ -240,7 +249,8 @@ get_header();
 					activePin = pin.name,
 					panel.activePostID = pin.postid,
 					getThePostData(),
-					panel.activeGlobalPanel = "info"
+					panel.activeGlobalPanel = "info",
+					panel.activeInfoPanel = "shisetsu"
 				]'>
 					<!--飲食店のリスト項目-->
 					<div v-if='pin.post_type == "food"' class='food'>
@@ -314,372 +324,375 @@ get_header();
 			<header>
 				<button
 				class="back"
-				@click='panel.activeSearchPanel = "list"'>⬅</button>
+				@click='panel.activeSearchPanel = "list"'><img src="images/back.svg" alt="⬅"></button>
 				<h2>条件設定</h2>
 				<button
 				class="check"
 				@click='[
 					getAPI(),
 					panel.activeSearchPanel = "list"
-				]'>✅</button>
+				]'><img src="images/diside.svg" alt="✅"></button>
 			</header>
 			<!--ジャンル：トイレ-->
 			<section class="restroom" v-show='panel.activeGenre == "restroom"'>
 				<h3 class="none">トイレの検索条件</h3>
 				<dl>
-					<dt>横のバーは</dt>
-					<dd>
-						<input 
-						type="radio" 
-						name="bar" 
-						id="dokaseru" 
-						v-model='panel.query.restroom.bar' 
-						value='1'>
-						<label for="dokaseru">どかせる</label>
-						<input 
-						type="radio" 
-						name="bar" 
-						id="dokasenai" 
-						v-model='panel.query.restroom.bar' 
-						value='0'>
-						<label for="dokasenai">どかせない</label>
-					</dd>
-					<dl>便座横の空間</dl>
-					<dd>
-						<input 
-						type="radio" 
-						name="space" 
-						id="kamiza" 
-						v-model='panel.query.restroom.side_space' 
-						value='1'>
-						<label for="kamiza">上座</label>
-						<input 
-						type="radio" 
-						name="space" 
-						id="simoza" 
-						v-model='panel.query.restroom.side_space' 
-						value='2'>
-						<label for="simoza">下座</label>
-					</dd>
-					<dt>清潔さ</dt>
-					<dd>
-						<input 
-						type="range" 
-						list="clean" 
-						name="clean" 
-						v-model='panel.query.restroom.clean'
-						min="0" max="2" step="1">
-						<datalist id="clean">
-						<option value="0" label="汚い">
-						<option value="1" label="ふつう">
-						<option value="2" label="きれい">
-						</datalist>
-						<span>{{panel.query.restroom.clean}}</span>
-					</dd>
+					<div>
+						<dt>横のバーは</dt>
+						<dd class='toggle'>
+							<input 
+							type="radio" 
+							name="bar" 
+							id="dokaseru" 
+							v-model='panel.query.restroom.bar' 
+							value='1'>
+							<label for="dokaseru" :class='{ checkin : panel.query.restroom.bar == 1 }'>どかせる</label>
+							<input 
+							type="radio" 
+							name="bar" 
+							id="dokasenai" 
+							v-model='panel.query.restroom.bar' 
+							value='0'>
+							<label for="dokasenai" :class='{ checkin : panel.query.restroom.bar == 0 }'>どかせない</label>
+						</dd>
+					</div>
+					<div>
+						<dl>便座横の空間</dl>
+						<dd class='toggle'>
+							<input 
+							type="radio" 
+							name="space" 
+							id="kamiza" 
+							v-model='panel.query.restroom.side_space' 
+							value='1'>
+							<label for="kamiza" :class='{ checkin : panel.query.restroom.side_space == 1}'>上座</label>
+							<input 
+							type="radio" 
+							name="space" 
+							id="simoza" 
+							v-model='panel.query.restroom.side_space' 
+							value='2'>
+							<label for="simoza" :class='{ checkin : panel.query.restroom.side_space == 2}'>下座</label>
+						</dd>
+					</div>
+					<div>
+						<dt>清潔さ</dt>
+						<dd class='range'>
+							<span v-if='panel.query.restroom.clean == 0'>汚い</span>
+							<span v-else-if='panel.query.restroom.clean == 1'>ふつう</span>
+							<span v-else-if='panel.query.restroom.clean == 2'>きれい</span>
+							<span v-else>スライダーを動かす</span>
+							<input 
+							type="range" 
+							list="clean" 
+							name="clean" 
+							v-model='panel.query.restroom.clean'
+							min="0" max="2" step="1">
+							
+						</dd>
+					</div>
 				</dl>
 			</section>
 			<!--ジャンル：飲食-->
 			<section class="food" v-show='panel.activeGenre == "food"'>
 				<h3 class="none">飲食の検索条件</h3>
 				<dl>
-					<dt>道具</dt>
-					<dd>
-						<input type="checkbox" name="tool" id="spoon" v-model="panel.query.food.spoon">
-						<label for="spoon">スプーン</label>
-						<input type="checkbox" name="tool" id="folk" v-model="panel.query.food.folk">
-						<label for="folk">フォーク</label>
-					</dd>
-					<dt>食のジャンル</dt>
-					<dd>
-						<?php
-						$api_query = new WP_Query(
-							array(
-								'post_type' => 'food',
-								'posts_per_page' => 100,
-							)
-						);
-						if ( $api_query->have_posts() ) {
-							while ( $api_query->have_posts() ) {
-								$api_query->the_post();
-						?>
+					<div>
+						<dt>道具</dt>
+						<dd class='checkbox'>
+							<input type="checkbox" name="tool" id="spoon" v-model="panel.query.food.spoon">
+							<label for="spoon" :class='{ checkin : panel.query.food.spoon == true }'>
+								<img src="" alt="🥄">
+								<p>スプーン</p>
+							</label>
+							<input type="checkbox" name="tool" id="folk" v-model="panel.query.food.folk">
+							<label for="folk":class='{ checkin : panel.query.food.folk == true }'>
+								<img src="" alt="🍴">
+								<p>フォーク</p>
+							</label>
+						</dd>
+					</div>
+					<div>
+						<dt>食のジャンル</dt>
+						<dd class='toggle'>
+							<?php
+							$api_query = new WP_Query(
+								array(
+									'post_type' => 'food',
+									'posts_per_page' => 100,
+								)
+							);
+							if ( $api_query->have_posts() ) {
+								while ( $api_query->have_posts() ) {
+									$api_query->the_post();
+							?>
+								<input 
+								type="radio" 
+								name="genre" 
+								value='<?php echo get_field('foods')['genre'];?>'
+								id="<?php echo get_field('foods')['genre'];?>" 
+								v-model='panel.query.food.genre'>
+	
+								<label
+								for="<?php echo get_field('foods')['genre'];?>"
+								:class='{ checkin : panel.query.food.genre == "<?php echo get_field('foods')['genre'];?>" }'><?php echo get_field('foods')['genre'];?></label>
+	
+							<?php
+								}
+							} 
+							wp_reset_postdata()
+							;?>
+						</dd>
+					</div>
+					<div>
+						<dt>予算</dt>
+						<dd class='range'>
+							<span>{{panel.query.food.yosan}}円</span>
 							<input 
-							type="radio" 
-							name="genre" 
-							id="<?php echo get_field('foods')['genre'];?>" 
-							v-model='panel.query.food.genre' 
-							value='1'>
-							<label for="<?php echo get_field('foods')['genre'];?>"><?php echo get_field('foods')['genre'];?></label>
-						<?php }} wp_reset_postdata();?>
-					</dd>
-					<dt>予算</dt>
-					<dd>
-						<input 
-						type="range" 
-						list="yosan" 
-						name="yosan" 
-						v-model='panel.query.food.yosan'
-						min="0" max="2000" step="100">
-						<datalist id="yosan">
-						<option value="0" label="0">
-						<option value="500" label="500">
-						<option value="1000" label="1000">
-						<option value="1500" label="1500">
-						<option value="2000" label="2000">
-						</datalist>
-						<span>{{panel.query.food.yosan}}</span>
-					</dd>
+							type="range" 
+							list="yosan" 
+							name="yosan" 
+							v-model='panel.query.food.yosan'
+							min="0" max="2000" step="100">
+							<datalist id="yosan">
+								<option value="0" label="0">
+								<option value="500" label="500">
+								<option value="1000" label="1000">
+								<option value="1500" label="1500">
+								<option value="2000" label="2000">
+							</datalist>
+							
+						</dd>
+					</div>
 				</dl>
 			</section>
 			<!--ジャンル：コンビニ-->
 			<section class="convenience" v-show='panel.activeGenre == "convenience"'>
 				<h3 class="none">コンビニの検索条件</h3>
 				<dl>
-					<dt>ブランド</dt>
-					<dd>
-						<input 
-						type="radio" 
-						id="seven" 
-						name="brand" 
-						value="seven" 
-						v-model='panel.query.convenience.brand'>
-						<label for="seven">セブン</label>
-						<input 
-						type="radio" 
-						id="famima" 
-						name="brand" 
-						value="famima" 
-						v-model='panel.query.convenience.brand'>
-						<label for="famima">ファミマ</label>
-						<input 
-						type="radio" 
-						id="lawson" 
-						name="brand" 
-						value="lawson" 
-						v-model='panel.query.convenience.brand'>
-						<label for="lawson">ローソン</label>
-						<input 
-						type="radio" 
-						id="other" 
-						name="brand" 
-						value="other" 
-						v-model='panel.query.convenience.brand'>
-						<label for="other">その他</label>
-					</dd>
-					<dt>施設</dt>
-					<dd>
-						<input type="checkbox" name="atm" id="atm" v-model="panel.query.convenience.atm">
-						<label for="atm">ATM</label>
-						<input type="checkbox" name="eatin" id="eatin" v-model="panel.query.convenience.eatin">
-						<label for="eatin">イートイン</label>
-					</dd>
+					<div>
+						<dt>ブランド</dt>
+						<dd class='toggle'>
+							<input 
+							type="radio" 
+							id="seven" 
+							name="brand" 
+							value="seven" 
+							v-model='panel.query.convenience.brand'>
+							<label for="seven" :class='{ checkin : panel.query.convenience.brand == "seven" }'>セブン</label>
+							<input 
+							type="radio" 
+							id="famima" 
+							name="brand" 
+							value="famima" 
+							v-model='panel.query.convenience.brand'>
+							<label for="famima" :class='{ checkin : panel.query.convenience.brand == "famima" }'>ファミマ</label>
+							<input 
+							type="radio" 
+							id="lawson" 
+							name="brand" 
+							value="lawson" 
+							v-model='panel.query.convenience.brand'>
+							<label for="lawson" :class='{ checkin : panel.query.convenience.brand == "lawson" }'>ローソン</label>
+							<input 
+							type="radio" 
+							id="other" 
+							name="brand" 
+							value="other" 
+							v-model='panel.query.convenience.brand'>
+							<label for="other" :class='{ checkin : panel.query.convenience.brand == "other" }'>その他</label>
+						</dd>
+					</div>
+					<div>
+						<dt>施設</dt>
+						<dd class='checkbox'>
+							<input type="checkbox" name="atm" id="atm" v-model="panel.query.convenience.atm">
+							<label for="atm" :class='{ checkin : panel.query.convenience.atm == true }'>
+								<img src="" alt="💩">
+								<p>ATM</p>
+							</label>
+							<input type="checkbox" name="eatin" id="eatin" v-model="panel.query.convenience.eatin">
+							<label for="eatin" :class='{ checkin : panel.query.convenience.eatin == true }'>
+								<img src="" alt="💩">
+								<p>イートイン</p>
+							</label>
+						</dd>
+					</div>
 				</dl>
 			</section>
 		</section>
 	</section>
 
 	<!--詳細情報パネル-->
-	<section id="infoPanel" v-show='panel.activeGlobalPanel == "info"'>
+	<section id="infoPanel"  v-show='panel.activeGlobalPanel == "info"'>
 		<!--タブエリア-->
 		<div class="tabArea">
 			<button @click='panel.activeInfoPanel = "shisetsu"' :class='{ active : panel.activeInfoPanel == "shisetsu" }'>施設情報</button>
 			<button @click='[
 				panel.activeInfoPanel = "photo",
-				removeWidthr()
+				removeWidth()
 			]' :class='{ active : panel.activeInfoPanel == "photo" }'>写真</button>
 		</div>
 		<!--情報エリア-->
 		<section class="shisetsuArea" v-show='panel.activeInfoPanel == "shisetsu"'>
-			施設のパネル
 			<dl>
 				<div v-if='
-				thePostData.type != "food" && 
-				thePostData.type == "restroom" && 
-				thePostData.type != "convenience" && 
-				thePostData.type != "amusement"'>
+				thePostData.type == "restroom"'>
 			    	<dt>便座横のバーは収納できるか</dt>
-					<dd>
+					<dd class='toggle'>
 						<span :class='{ checkin : thePostData.acf.metas.fold_the_bar == true }'>どかせる</span>
 						<span :class='{ checkin : thePostData.acf.metas.fold_the_bar == false }'>どかせない</span>
 					</dd>
 			    </div>
 			    <div v-if='
-				thePostData.type != "food" && 
-				thePostData.type == "restroom" && 
-				thePostData.type != "convenience" && 
-				thePostData.type != "amusement"'>
+				thePostData.type == "restroom"'>
 			    	<dt>便座横の空間</dt>
-					<dd>
+					<dd class='toggle'>
 						<span :class='{ checkin : thePostData.acf.metas.side_space == 0 }'>ない</span>
 						<span :class='{ checkin : thePostData.acf.metas.side_space == 1 }'>上座</span>
 						<span :class='{ checkin : thePostData.acf.metas.side_space == 2 }'>下座</span>
 					</dd>
 			    </div>
 				<div v-if='
-				thePostData.type != "food" && 
-				thePostData.type == "restroom" && 
-				thePostData.type != "convenience" && 
-				thePostData.type != "amusement"'>
+				thePostData.type == "restroom"'>
 					<dt>手洗い台の高さ</dt>
-					<dd>
+					<dd class='range'>
 						<span :class='{ checkin : thePostData.acf.metas.hand_height == 0 }'>低い</span>
 						<span :class='{ checkin : thePostData.acf.metas.hand_height == 1 }'>ちょうどよい</span>
 						<span :class='{ checkin : thePostData.acf.metas.hand_height == 2 }'>高い</span>
 					</dd>
 				</div>
 				<div v-if='
-				thePostData.type != "food" && 
-				thePostData.type == "restroom" && 
-				thePostData.type != "convenience" && 
-				thePostData.type != "amusement"'>
+				thePostData.type == "restroom"'>
 					<dt>便座の高さ</dt>
-					<dd>
+					<dd class='range'>
 						<span :class='{ checkin : thePostData.acf.metas.benza_height == 0 }'>低い</span>
 						<span :class='{ checkin : thePostData.acf.metas.benza_height == 1 }'>ちょうどよい</span>
 						<span :class='{ checkin : thePostData.acf.metas.benza_height == 2 }'>高い</span>
 					</dd>
 				</div>
 				<div v-if='
-				thePostData.type != "food" && 
-				thePostData.type == "restroom" && 
-				thePostData.type != "convenience" && 
-				thePostData.type != "amusement"'>
+				thePostData.type == "restroom"'>
 					<dt>トイレの清潔さ</dt>
-					<dd>
+					<dd class='toggle'>
 						<span :class='{ checkin : thePostData.acf.metas.clean == 0 }'>汚い</span>
 						<span :class='{ checkin : thePostData.acf.metas.clean == 1 }'>ちょうどよい</span>
 						<span :class='{ checkin : thePostData.acf.metas.clean == 2 }'>美しい</span>
 					</dd>
 				</div>
 				<div v-if='
-				thePostData.type != "food" && 
-				thePostData.type == "restroom" && 
-				thePostData.type != "convenience" && 
-				thePostData.type != "amusement"'>
+				thePostData.type == "restroom"'>
 					<dt>使いやすさ</dt>
-					<dd>
-						<div class='starArea' v-html='star(thePostData.acf.metas.tukaiyasusa)'></div>
+					<dd class='range'>
+						<!--<div class='starArea' v-html='star(thePostData.acf.metas.tukaiyasusa)'></div>-->
+						<p v-if='thePostData.acf.metas.tukaiyasusa = 0'>使いづらい</p>
+						<p v-else-if='thePostData.acf.metas.tukaiyasusa = 1'>使いづらい</p>
+						<p v-else-if='thePostData.acf.metas.tukaiyasusa = 2'>やや使いづらい</p>
+						<p v-else-if='thePostData.acf.metas.tukaiyasusa = 3'>普通</p>
+						<p v-else-if='thePostData.acf.metas.tukaiyasusa = 4'>やや使いやすい</p>
+						<p v-else-if='thePostData.acf.metas.tukaiyasusa = 5'>使いやすい/p>
+						<p v-else>Data読み込みませんでした</p>
+						<input type="range" class="restroom_tukaiyasusa" min="0" max="5" step="1" :value="thePostData.acf.metas.tukaiyasusa" disabled>
 					</dd>
 				</div>
 				<div v-if='
-				thePostData.type == "food" && 
-				thePostData.type != "restroom" && 
-				thePostData.type != "convenience" && 
-				thePostData.type != "amusement"'>
+				thePostData.type == "food"'>
 					<dt>注文形式</dt>
-					<dd>
-						<span :class='{ checkin : thePostData.acf.metas.orderstyle == "0:食券式" }'>食券式</span>
-						<span :class='{ checkin : thePostData.acf.metas.orderstyle == "1:オーダー式" }'>オーダー式</span>
+					<dd class='tokusyu'>
+						<div
+						v-if='thePostData.acf.metas.orderstyle == "0:食券式"'
+						:class='{ checkin : thePostData.acf.metas.orderstyle == "0:食券式" }'>食券式</div>
+						<div
+						v-if='thePostData.acf.metas.orderstyle == "1:オーダー式"'
+						:class='{ checkin : thePostData.acf.metas.orderstyle == "1:オーダー式" }'>オーダー式</div>
+
+						<div
+						v-if='thePostData.acf.metas.payment == true'
+						:class='{ checkin : thePostData.acf.metas.payment == true }'>できる</div>
+						<div
+						v-if='thePostData.acf.metas.payment == false'
+						:class='{ checkin : thePostData.acf.metas.payment == false }'>できない</div>
 					</dd>
 				</div>
 				<div v-if='
-				thePostData.type == "food" && 
-				thePostData.type != "restroom" && 
-				thePostData.type != "convenience" && 
-				thePostData.type != "amusement"'>
-					<dt>ＩＣの支払</dt>
-					<dd>
-						<span :class='{ checkin : thePostData.acf.metas.payment == true }'>できる</span>
-						<span :class='{ checkin : thePostData.acf.metas.payment == false }'>できない</span>
-					</dd>
-				</div>
-				<div v-if='
-				thePostData.type == "food" && 
-				thePostData.type != "restroom" && 
-				thePostData.type != "convenience" && 
-				thePostData.type != "amusement"'>
+				thePostData.type == "food"'>
 					<dt>店員さん</dt>
-					<dd>
-					<div class='starArea' v-html='star(thePostData.acf.metas.smile)'></div>
+					<dd class='icon'>
+					<!--<div class='starArea' v-html='star(thePostData.acf.metas.smile)'></div>-->
+						<div v-if='thePostData.acf.metas.smile = 0'>むすっと</div>
+						<div v-else-if='thePostData.acf.metas.smile = 1'>普通</div>
+						<div v-else-if='thePostData.acf.metas.smile = 2'>にこにこ</div>
+						<div v-else='thePostData.acf.metas.smile = 3'>笑顔満開</div>
 					</dd>
 				</div>
 				<div v-if='
-				thePostData.type == "food" && 
-				thePostData.type != "restroom" && 
-				thePostData.type != "convenience" && 
-				thePostData.type != "amusement"'>
+				thePostData.type == "food"'>
 					<dt>道具</dt>
-					<dd>
-						<span :class='{ checkin : thePostData.acf.metas.tool[0] == "spoon" }'>スプーン</span>
-						<span :class='{ checkin : thePostData.acf.metas.tool[0] == "spoon" }'>フォーク</span>
+					<dd class='icon'>
+						<div :class='{ checkin : thePostData.acf.metas.tool[0] == "spoon" }'>スプーン</div>
+						<div :class='{ checkin : thePostData.acf.metas.tool[0] == "folk" }'>フォーク</div>
 					</dd>
 				</div>
 				<div v-if='
-				thePostData.type == "food" && 
-				thePostData.type != "restroom" && 
-				thePostData.type != "convenience" && 
-				thePostData.type != "amusement"'>
+				thePostData.type == "food"'>
 					<dt>椅子</dt>
-					<dd>
+					<dd class='toggle'>
 						<span :class='{ checkin : thePostData.acf.metas.chair == true }'>どかせる</span>
 						<span :class='{ checkin : thePostData.acf.metas.chair == false }'>どかせない</span>
 					</dd>
 				</div>
 				<div v-if='
-				thePostData.type != "food" && 
-				thePostData.type != "restroom" && 
-				thePostData.type == "convenience" && 
-				thePostData.type != "amusement"'>
+				thePostData.type == "convenience"'>
 					<dt>ATM</dt>
-					<dd>
+					<dd class='toggle'>
 						<span :class='{ checkin : thePostData.acf.metas.atm[0] == 0 }'>ない</span>
-						<span :class='{ checkin : thePostData.acf.metas.atm[0] == 1 }'>ある</span>
-						<span :class='{ checkin : thePostData.acf.metas.atm[0] == 2 }'>車イスでも操作できる</span>
+						<span :class='{ checkin : thePostData.acf.metas.atm[0] == 1 || thePostData.acf.metas.atm[0] == 2 }'>ある</span>
 					</dd>
 				</div>
 				<div v-if='
-				thePostData.type != "food" && 
-				thePostData.type != "restroom" && 
-				thePostData.type == "convenience" && 
-				thePostData.type != "amusement"'>
+				thePostData.type == "convenience"'>
 					<dt>イートインコーナー</dt>
-					<dd>
-						<span :class='{ checkin : thePostData.acf.metas.eatin == true }'>ある</span>
+					<dd class='toggle'>
 						<span :class='{ checkin : thePostData.acf.metas.eatin == false }'>ない</span>
+						<span :class='{ checkin : thePostData.acf.metas.eatin == true }'>ある</span>
 					</dd>
 				</div>
 				<div v-if='
-				thePostData.type != "food" && 
-				thePostData.type != "restroom" && 
-				thePostData.type != "convenience" && 
 				thePostData.type == "amusement"'>
 					<dt>ひとこと</dt>
-					<dd>{{thePostData.acf.info.dup}}</dd>
+					<dd class='text'>
+						<p>{{thePostData.acf.info.dup}}</p>
+					</dd>
 				</div>
 				<div v-if='
-				thePostData.type != "food" && 
-				thePostData.type != "restroom" && 
-				thePostData.type != "convenience" && 
 				thePostData.type == "amusement"'>
 					<dt>接客</dt>
-					<dd>
-						<div class='starArea' v-html='star(thePostData.acf.metas.tukaiyasusa)'></div>
+					<dd class='range'>
+						<!--<div class='starArea' v-html='star(thePostData.acf.setubi.sekkyaku)'></div>-->
+						<p v-if='thePostData.acf.setubi.sekkyaku = 0'>全然ダメ</p>
+						<p v-else-if='thePostData.acf.setubi.sekkyaku = 1'>優しくない</p>
+						<p v-else-if='thePostData.acf.setubi.sekkyaku = 2'>やや優しくない</p>
+						<p v-else-if='thePostData.acf.setubi.sekkyaku== 3'>普通</p>
+						<p v-else-if='thePostData.acf.setubi.sekkyaku = 4'>優しい</p>
+						<p v-else-if='thePostData.acf.setubi.sekkyaku = 5'>すごく優しい</p>
+						<p v-else>Data読み込みませんでした</p>
+						<input type="range" class="amusement_sekkyaku" min="0" max="5" step="1" :value="thePostData.acf.setubi.sekkyaku" disabled>
 					</dd>
-					
 				</div>
 				<div v-if='
-				thePostData.type != "food" && 
-				thePostData.type != "restroom" && 
-				thePostData.type != "convenience" && 
-				thePostData.type == "amusement"'>
-					<dt>ピークタイムの混雑度</dt>
-					<dd></dd>
-					
-				</div>
-				<div v-if='
-				thePostData.type != "food" && 
-				thePostData.type != "restroom" && 
-				thePostData.type != "convenience" && 
 				thePostData.type == "amusement"'>
 					<dt>楽しめるための工夫</dt>
-					<dd><p>{{thePostData.acf.setubi.kuhuu}}</p></dd>
+					<dd class='text'>
+						<p v-html='thePostData.acf.setubi.kuhuu'></p>
+					</dd>
 				</div>
 				<div v-if='
-				thePostData.type == "food" && 
-				thePostData.type != "restroom" && 
-				thePostData.type != "convenience" && 
+				thePostData.type == "food" ||
 				thePostData.type == "amusement"'>
 					<dt>公式HP</dt>
-					<dd><a href="thePostData.link" target="_blank">{{thePostData.link}}</dd>
+					<dd class='link'>
+						<a :href="thePostData.acf.site" target="_blank">{{thePostData.acf.site}}</a>
+					</dd>
 				</div>
 			</dl>
 		</section>
@@ -696,6 +709,7 @@ get_header();
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
 <script src="js/vue-google-maps.js"></script>
 <script><?php include('js/index.js');?></script>
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP&display=swap" rel="stylesheet"> 
 
 <?php wp_footer(); ?>
 </body>
