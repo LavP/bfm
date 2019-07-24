@@ -168,6 +168,7 @@ body{
         color: #535353;
         dt{
             margin-bottom: 1em;
+            font-weight: bold;
             &.yyheight{
                 line-height: 1.8;
             }
@@ -189,6 +190,7 @@ body{
                     color: white;
                     text-align: center;
                     border-radius: 4px;
+                    color: white;
                     &::before{
                         content: "";
                         position: absolute;
@@ -211,9 +213,9 @@ body{
                     cursor: pointer;
                     border-radius: 55px;
                     padding: 0.7em 1em;
-                    border: 1px solid gray;
+                    border: 1px solid var(--genreColor);
                     margin: 1em 0;
-                    &.checkin{
+                    &.active{
                         color: white;
                         background: var(--genreColor);
                     }
@@ -299,10 +301,10 @@ body{
     }
     #list-panel{
         ul{
-            height: 40vh;
+            height: 35vh;
             overflow-y: scroll;
             @include pc{
-                height: 88%;
+                height: 82%;
             }
             li{
                 >div{
@@ -331,6 +333,7 @@ body{
                             display: flex;
                             align-items: center;
                             flex: 0 0 auto;
+                            text-align: center;
                             margin-right: 0.5em;
                             width: 6em;
                             justify-content: center;
@@ -369,6 +372,10 @@ body{
     }
     #query-panel{
         >section{
+            height: 35%;
+            @include pc{
+                height: initial;
+            }
             dl{
                 >div{
                     display: flex;
@@ -398,7 +405,7 @@ body{
                                 &:not(:last-child){
                                     margin-bottom: 0.8em;
                                 }
-                                &.checkin{
+                                &.active{
                                     color: white;
                                     background: var(--genreColor);
                                     border: 1px solid var(--genreColor);
@@ -420,6 +427,7 @@ body{
                                 margin-bottom: 0.5em;
                                 text-align: center;
                                 border-radius: 4px;
+                                color: white;
                                 &::before{
                                     content: "";
                                     position: absolute;
@@ -441,7 +449,7 @@ body{
                                 cursor: pointer;
                                 border-radius: 55px;
                                 padding: 0.7em 1em;
-                                &.checkin{
+                                &.active{
                                     filter: grayscale(0);
                                 }
                             }
@@ -494,6 +502,10 @@ body{
     }
     .shisetsuArea{ 
         overflow-y: scroll;
+        height: 35vh;
+        @include pc{
+            height: 82%;
+        }
         dl{
             display: block;
             div{
@@ -504,33 +516,79 @@ body{
                 dt{
                     width: 25%;
                     font-weight: bolder;
+                    line-height: 1.5;
                 }
                 dd{
                     flex-basis:calc(75% - 1em);
                     padding: 2em 0;
-                    display:flex;
-                    justify-content: space-around;
                     font-size: 0.8em;
-                    align-items:center;
-                    &.tokusyu{
-                        div{
-                        
-                        &.checkin{
-                            flex-basis:calc(75% - 1em);
-                            padding: 2em 0;
-                            display:flex;
-                            justify-content: space-around;
-                            font-size: 0.8em;
-                            align-items:center;  
-                        }
+                    &.toggle{
+                        display: flex;
+                        justify-content: space-around;
+                        span{
+                            padding: 0.5em 1em;
+                            border-radius: 100px;
+                            &.active{
+                                background: var(--genreColor);
+                                color: white;
+                            }
                         }
                     }
-                    span{
-                        border-radius: 55px;
-                        padding: 0.7em 1em;
-                        &.checkin{
-                            color: white;
+                    &.range{
+                        input{
+                            width: 100%;
+                        }
+                        span,p{
+                            display:inline-block;
+                            position: relative;
+                            padding: 7px 10px;
+                            min-width: 120px;
+                            max-width: 100%;
                             background: var(--genreColor);
+                            margin-bottom: 0.5em;
+                            text-align: center;
+                            border-radius: 4px;
+                            color: white;
+                            &::before{
+                                content: "";
+                                position: absolute;
+                                top: 100%;
+                                left: 50%;
+                                margin-left: -15px;
+                                border: 15px solid transparent;
+                                border-top: 15px solid var(--genreColor);
+                            }
+                        }
+                    }
+                    &.icon{
+                        display: flex;
+                        justify-content: space-around;
+                        div{
+                            display: flex;
+                            flex-direction: column;
+                            filter: grayscale(1);
+                            img{
+                                width: 2.5em;
+                                height: auto;
+                            }
+                            p{
+                                text-align: center;
+                            }
+                            &.active{
+                                filter: grayscale(0);
+                            }
+                        }
+                    }
+                    &.text,
+                    &.link{
+                        line-height: 1.5;
+                        text-align: justify;
+                        a{
+                            text-decoration: none;
+                            color: #535353;
+                            &:hover{
+                                text-decoration: underline;
+                            }
                         }
                     }
                 }
@@ -539,6 +597,10 @@ body{
     }
     .photoArea{
         overflow-y: scroll;
+        height: 35vh;
+        @include pc{
+            height: 82%;
+        }
         .hasPhoto{
             display: grid;
             grid-template-columns: repeat(2,1fr);
