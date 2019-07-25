@@ -13,7 +13,22 @@ if(!isset($_SESSION['come']) || $_GET['t'] == 1){
 }
 get_header();
 ?>
-<link rel="stylesheet" href="style/index.min.css">
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <base href="<?php echo get_template_directory_uri();?>/">
+    <!--共通CSS-->
+    <style>
+        <?php include('style/reset.css');?>
+		<?php include('style/global.min.css');?>
+		<?php include('style/index.min.css');?>
+		<?php include('style/googlefonts.css');?>
+    </style>
+	<?php wp_head(); ?>
 </head>
 <body>
 	
@@ -785,13 +800,11 @@ get_header();
 	</section>
 </main>
 
-<!--このページ固有のScript-->
+<!--Script-->
 <script><?php include('js/vue.js');?></script>
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
-<script src="js/vue-google-maps.js"></script>
+<script><?php include('js/axios.min.js');?></script>
+<script><?php include('js/vue-google-maps.js');?></script>
 <script><?php include('js/index.js');?></script>
-<link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP&display=swap" rel="stylesheet"> 
 
 <?php wp_footer(); ?>
 </body>
