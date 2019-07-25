@@ -1,8 +1,16 @@
 <?php
+session_start();
 /*
 Template name:トップページ
 */
-
+if(!isset($_SESSION['come']) || $_GET['t'] == 1){
+	$_SESSION['come'] = true;
+	$tutorial = 1;
+	//echo "チュートリアルは 有効 です。";
+}else{
+	$tutorial = 0;
+	//echo "チュートリアルは 無効 です。";
+}
 get_header();
 ?>
 <link rel="stylesheet" href="style/index.min.css">
@@ -58,11 +66,13 @@ get_header();
 					<p class='time' v-if='thePostData.acf.info.start_time == thePostData.acf.info.end_time'>24時間営業</p>
 					<p class='time' v-else>{{thePostData.acf.info.start_time}}&mdash;{{thePostData.acf.info.end_time}}</p>
 					<p class='sougouhyouka'>総合評価<br>
-					<!--TODO:ここがトイレが出ない原因-->
-					<!--<div class='starArea' v-html='star(thePostData.acf.metas.tukaiyasusa)'></div>-->
-					<div>{{thePostData.acf.metas.tukaiyasusa}}</div>
+					<!--TODO:ここがトイレが出ない原因
+					<div class='starArea' v-html='star(thePostData.acf.metas.tukaiyasusa)'></div>-->
+					<div class='starArea' v-html='star(5)'></div>
+					</p>
 					<button @click='[panel.activeGlobalPanel = "search-panel",infoWinOpen = false]'>もどる</button>
 				</div>
+				
 				<div class='pinPopup' v-if='thePostData.type == "convenience"'>
 					<img :src="thePostData.acf.eye.sizes.thumbnail" :alt="thePostData.acf.eye.sizes.thumbnail">
 					<p class='genre'>{{thePostData.acf.metas.type.label}}</p>
@@ -79,7 +89,7 @@ get_header();
 					<p class='time' v-else>{{thePostData.acf.info.start_time}}&nbsp;&mdash;&nbsp;{{thePostData.acf.info.end_time}}</p>
 					<p class='cost'>約{{thePostData.acf.cost.min}}円&sim;{{thePostData.acf.cost.max}}円程</p>
 					<p class='sougouhyouka'>総合評価<br>
-					<div class='starArea' v-html='star(thePostData.acf.setubi.sougouhyouka)'></div>
+					<div class='starArea' v-html='star(thePostData.acf.sougouhyouka)'></div>
 					</p>
 					<button @click='[panel.activeGlobalPanel = "search-panel",infoWinOpen = false]'>もどる</button>
 				</div>
@@ -93,6 +103,48 @@ get_header();
 			@click="[toggleInfoWindow(pin,i),center = pin.gps_pos,activePin = pin.name]">
 			</gmap-marker>
 		</google-map>
+	</section>
+
+	<!--チュートリアル要素-->
+	<section id='tutorialArea'>
+		<div id='tutorial_01' v-show='tutorial == 1 && tutorial_num == 1'>
+			<div>
+				<img src="images/logo.png" alt="バリマ">
+				<p>
+					日本工学院ってバリアフリー<br>どうなの？<br><br>
+					そんな不安を抱く車椅子ユーザーに送るバリアフリーマップです！
+				</p>
+				<button @click='[
+					panel.activeGlobalPanel = "global-setting",
+					tutorial_num = 2
+				]'>つかう</button>
+			</div>
+		</div>
+		<div id='tutorial_02' v-show='tutorial == 1 && tutorial_num == 2'>
+			<div>
+				<button><img src="images/close.svg" alt="✖" @click='tutorial_num = null'></button>
+				<span class="no">1</span>
+				<p>まず、あなたの車椅子について教えて下さい。あなたにぴったりな施設が表示されるようになります。</p>
+			</div>
+		</div>
+		<div id='tutorial_03' v-show='tutorial == 1 && tutorial_num == 3'>
+			<div>
+				<button><img src="images/close.svg" alt="✖" @click='tutorial_num = null'></button>
+				<span class="no">2</span>
+				<p>探したいジャンルを選びます。</p>
+			</div>
+		</div>
+		<div id='tutorial_04' v-show='tutorial == 1 && tutorial_num == 4'>
+			<div>
+				<button><img src="images/close.svg" alt="✖" @click='[tutorial = 0]'></button>
+				<span class="no">3</span>
+				<p>検索結果が表示されます。<br>気になるお店をクリックしましょう。</p>
+				<p><img src="images/setting.svg" alt="⚙">で条件を絞り込めます。</p>
+			</div>
+		</div>
+		<div id='tutorial_on' v-show='tutorial == 0' @click='tutorial = 1,tutorial_num = 2'>
+			<img src="images/info.svg" alt='info'>ヒント
+		</div>
 	</section>
 
 	<!--グローバル設定ボタン-->
@@ -109,12 +161,16 @@ get_header();
 		<header>
 			<button
 			class="back"
-			@click='[panel.activeGlobalPanel = "search-panel"]'><img src="images/back.svg" alt="⬅"></button>
+			@click='[
+				panel.activeGlobalPanel = "search-panel",
+				tutorial_num = 3
+			]'><img src="images/back.svg" alt="⬅"></button>
 			<h2>車椅子設定</h2>
 			<button
 			class="diside"
 			@click='[
-				panel.activeGlobalPanel = "search-panel"
+				panel.activeGlobalPanel = "search-panel",
+				tutorial_num = 3
 			]'><img src="images/diside.svg" alt="✅"></button>
 		</header>
 		<dl>
@@ -179,7 +235,7 @@ get_header();
 						panel.activeGenre = "restroom",
 						panel.activeSearchPanel = "list",
 						getAPI(),
-						document.documentElement.style.setProperty("--genreColor","#3DBFFF")]'>
+						tutorial_num = 4]'>
 						<img src="images/pin/toire-C.svg" alt="トイレ">
 						<p>トイレ</p>
 					</button>
@@ -189,7 +245,8 @@ get_header();
 					@click='[
 						panel.activeGenre = "food",
 						panel.activeSearchPanel = "list",
-						getAPI()]'>
+						getAPI(),
+						tutorial_num = 4]'>
 						<img src="images/pin/food-C.svg" alt="飲食店">
 						<p>飲食店</p>
 					</button>
@@ -199,7 +256,8 @@ get_header();
 					@click='[
 						panel.activeGenre = "convenience",
 						panel.activeSearchPanel = "list",
-						getAPI()]'>
+						getAPI(),
+						tutorial_num = 4]'>
 						<img src="images/pin/store-C.svg" alt="コンビニ">
 						<p>コンビニ</p>
 					</button>
@@ -209,7 +267,8 @@ get_header();
 					@click='[
 						panel.activeGenre = "amusement",
 						panel.activeSearchPanel = "list",
-						getAPI()]'>
+						getAPI(),
+						tutorial_num = 4]'>
 						<img src="images/pin/mic-C.svg" alt="アミューズメント">
 						<p>アミューズメント</p>
 					</button>
@@ -259,11 +318,13 @@ get_header();
 							<h3>{{pin.name}}</h3>
 						</div>
 						<dl class="metas">
-							<dt class="sougouhyouka">おいしさ</dt>
+							
+							<dt class="sougouhyouka"><img src="images/oisisa.svg" alt="💩"></dt>
 							<dd class="sougouhyouka">
 								<span v-for='n in pin.metas.hyouka'>★</span>
 							</dd>
-							<dd class="cost none">値段</dd>
+							
+							<dd class="cost none"><img src="images/nedan.svg" alt="💩"></dd>
 							<dt class="cost">
 								{{pin.metas.cost.min}} 〜 {{pin.metas.cost.max}}円
 							</dt>
@@ -277,11 +338,13 @@ get_header();
 							<h3>{{pin.name}}</h3>
 						</div>
 						<dl class="metas">
-						<dt class="sougouhyouka">たのしさ</dt>
+						
+						<dt class="sougouhyouka"><img src="images/tanosisa.svg" alt="💩"></dt>
 							<dd class="sougouhyouka">
 								<span v-for='n in pin.metas.hyouka'>★</span>
 							</dd>
-							<dd class="cost none">値段</dd>
+							
+							<dd class="cost none"><img src="images/nedan.svg" alt="💩"></dd>
 							<dt class="cost">
 								{{pin.metas.cost.min}} 〜 {{pin.metas.cost.max}}円
 							</dt>
@@ -294,7 +357,8 @@ get_header();
 							<h3>{{pin.name}}</h3>
 						</div>
 						<dl class="metas">
-							<dt>使える時間</dt>
+							
+							<dt><img src="images/time.svg" alt="💩"></dt>
 							<dd>
 								<time>{{pin.metas.time.start}} 〜 {{pin.metas.time.end}}</time>
 							</dd>
@@ -308,9 +372,9 @@ get_header();
 							<h3>{{pin.name}}</h3>
 						</div>
 						<dl class="metas">
-							<dt><img src="" alt="ATM"></dt>
+							<dt><img src="images/atm.svg" alt="ATM"></dt>
 							<dd>ATM {{isLabel(pin.metas.atm)}}</dd>
-							<dt><img src="" alt="イートイン"></dt>
+							<dt><img src="images/eatin.svg" alt="イートイン"></dt>
 							<dd>イートイン {{isLabel(pin.metas.eatin)}}</dd>
 						</dl>
 						<img :src="pin.eye" :alt="'写真'+pin.name" class="photo">
@@ -726,7 +790,7 @@ get_header();
 <!--このページ固有のScript-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
 <script src="js/vue-google-maps.js"></script>
-<script><?php include('js/index.js');?></script>
+<script><?php include('js/index.js.php');?></script>
 <link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP&display=swap" rel="stylesheet"> 
 
 <?php wp_footer(); ?>

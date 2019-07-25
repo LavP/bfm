@@ -27,6 +27,8 @@ Vue.component(
 new Vue({
     el: "#mainMain",
     data: {
+        tutorial:<?php echo $tutorial;?>, //true = 1
+        tutorial_num:1,
         place: "",
         center: {
             lat: 35.5636434,
@@ -199,7 +201,8 @@ new Vue({
             .then(response => (this.thePostData = response.data));
         },
         star:function(get){
-            //get = Number(get);
+            get = Number(get);
+            //get = 4;
             console.log(get);
             var kuro = Math.floor(get/1);
             var han = get%1;

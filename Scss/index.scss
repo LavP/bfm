@@ -360,6 +360,11 @@ body{
                         margin-left:0.8em;
                         dt{
                             padding-right: 0.2em;
+                            img{
+                                width: 1em;
+                                height: 1.6em;
+                                margin-right: 0.5em;
+                            }
                         }
                         dd{
                             padding-right: 1em;
@@ -653,4 +658,170 @@ body{
 
 #mainFooter{
     display: none;
+}
+
+
+
+
+#tutorialArea{
+    #tutorial_01{
+        z-index: 5000;
+        width: 100%;
+        height:100vh;
+        background-color: #ffffffe8;
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        div{
+            max-width: 400px;
+            width: 70%;
+            align-items: center;
+            text-align: center;
+
+            img{
+            }
+            p{
+                font-size: 1em;
+                line-height: 1.5;
+                margin-top: 2em;
+                text-align: left;
+            }
+            button{
+                border-radius: 55px;
+                background-color:#3DBFFF;
+                color: white;
+                padding: 0.5em 2em;
+                margin-top: 2em;
+                border: none;
+                font-size: 1.5em;
+                text-align: center;
+                transition: all 0.2s ease-in-out;
+                &:hover{
+                    background-color: #E8A02B;
+                }
+                
+            }
+        }
+    }
+    #tutorial_02,
+    #tutorial_03,
+    #tutorial_04{
+        z-index: 5000;
+        background-color: #3DBFFF;
+        color: white;
+        font-weight: bold;
+        position: absolute;
+        padding: 2em;
+        box-sizing: border-box;
+        border-radius: 10px;
+        box-shadow: 0 0 10px #869697;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        @include pc{
+            max-height: 250px;
+        }
+        div{
+            width: 100%;
+            position: relative;
+            button{
+                position: absolute;
+                top: 0em;
+                right: 0em;
+                background: none;
+                border: none;
+                margin: 0;
+                padding: 0;
+                img{
+                    width: 1.3em;
+                    height: auto;
+                }
+            }
+            span{
+                background-color: #E8A02B;
+                width: 2em;
+                height: 2em;
+                line-height: 2;
+                border-radius: 50%;
+                display: block;
+                text-align: center;
+                font-size: 1.7em;
+                margin-bottom: 1em;
+            }
+            p{
+                line-height: 1.5;
+                text-align: justify;
+                img{
+                    width: 1em;
+                    height: auto;
+                    filter: invert(1);
+                }
+            }
+        }
+    }
+    #tutorial_02{
+        width: 80%;
+        top: 15%;
+        left: 0;
+        right: 0;
+        margin: auto;
+        @include pc{
+            margin: auto;
+            top: 0;
+            bottom: 0;
+            left: -45%;
+            width: 300px;
+        }
+    }
+    #tutorial_03{
+        width: 80%;
+        top: 20%;
+        left: 0;
+        margin: auto;
+        right: 0;
+        @include pc{
+            margin: auto;
+            top: 0;
+            bottom: 0;
+            left: -45%;
+            width: 300px;
+            max-height: 150px;
+        }
+    }
+    #tutorial_04{
+        width: 50%;
+        top: 20%;
+        left: 20%;
+        @include pc{
+            margin: auto;
+            top: 0;
+            bottom: 0;
+            left: -45%;
+            width: 300px;
+        }
+    }
+    #tutorial_on{
+        z-index: 5000;
+        position: absolute;
+        top: 1em;
+        left: 1em;
+        color: white;
+        background-color: #E8A02B;
+        padding: 0.2em 0.5em;
+        border-radius: 100px;
+        cursor: pointer;
+        img{
+            margin-right: 0.5em;
+            width: 1em;
+            height: auto;
+            filter: invert(1);
+        }
+        @include pc{
+            left: initial;
+            right: 1em;
+        }
+    }
 }
