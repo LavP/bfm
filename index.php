@@ -60,7 +60,7 @@ get_header();
 					<p class='sougouhyouka'>総合評価<br>
 					<!--TODO:ここがトイレが出ない原因-->
 					<!--<div class='starArea' v-html='star(thePostData.acf.metas.tukaiyasusa)'></div>-->
-					</p>
+					<div>{{thePostData.acf.metas.tukaiyasusa}}</div>
 					<button @click='[panel.activeGlobalPanel = "search-panel",infoWinOpen = false]'>もどる</button>
 				</div>
 				<div class='pinPopup' v-if='thePostData.type == "convenience"'>
