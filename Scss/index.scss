@@ -1,9 +1,10 @@
 :root{
     --genreColor : #E8A02B;
+    --genreColorRotate : 0deg;
 }
 
 body{
-    color:#535353!important;
+    color:#535353!important; 
 }
 
 @mixin pc {
@@ -461,16 +462,24 @@ body{
     
                         }
                         &.checkbox{
+                            flex-wrap: nowrap;
                             input{
                                 display: none;
                             }
                             label{
+                                text-align: center;
                                 filter: grayscale(1);
                                 cursor: pointer;
                                 border-radius: 55px;
                                 padding: 0.7em 1em;
+                                img{
+                                    filter: grayscale(1);
+                                }
                                 &.active{
                                     filter: grayscale(0);
+                                    img{
+                                        filter: hue-rotate(var(--genreColorRotate));
+                                    }
                                 }
                             }
                         }
@@ -586,16 +595,18 @@ body{
                         div{
                             display: flex;
                             flex-direction: column;
-                            filter: grayscale(1);
                             img{
                                 width: 2.5em;
                                 height: auto;
+                                filter: grayscale(1);
                             }
                             p{
                                 text-align: center;
                             }
                             &.active{
-                                filter: grayscale(0);
+                                img{
+                                    filter: hue-rotate(var(--genreColorRotate));
+                                }
                             }
                         }
                     }
@@ -792,9 +803,11 @@ body{
         }
     }
     #tutorial_04{
-        width: 50%;
-        top: 20%;
-        left: 20%;
+        width: 80%;
+        top: 15%;
+        left: 0;
+        right: 0;
+        margin: auto;
         @include pc{
             margin: auto;
             top: 0;

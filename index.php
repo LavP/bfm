@@ -136,13 +136,13 @@ get_header();
 		</div>
 		<div id='tutorial_04' v-show='tutorial == 1 && tutorial_num == 4'>
 			<div>
-				<button><img src="images/close.svg" alt="✖" @click='[tutorial = 0]'></button>
+				<button><img src="images/close.svg" alt="✖" @click='[tutorial_num = null,tutorial = 0]'></button>
 				<span class="no">3</span>
 				<p>検索結果が表示されます。<br>気になるお店をクリックしましょう。</p>
 				<p><img src="images/setting.svg" alt="⚙">で条件を絞り込めます。</p>
 			</div>
 		</div>
-		<div id='tutorial_on' v-show='tutorial == 0' @click='tutorial = 1,tutorial_num = 2'>
+		<div id='tutorial_on' v-show='tutorial == 0' @click='[tutorial = 1,tutorial_num = 2,panel.activeGlobalPanel = "global-setting"]'>
 			<img src="images/info.svg" alt='info'>ヒント
 		</div>
 	</section>
@@ -466,12 +466,12 @@ get_header();
 						<dd class='checkbox'>
 							<input type="checkbox" name="tool" id="spoon" v-model="panel.query.food.spoon">
 							<label for="spoon" :class='{ active : panel.query.food.spoon == true }'>
-								<img src="" alt="🥄">
+								<img src="images/ken/spoon.svg" alt="🥄">
 								<p>スプーン</p>
 							</label>
 							<input type="checkbox" name="tool" id="folk" v-model="panel.query.food.folk">
 							<label for="folk":class='{ active : panel.query.food.folk == true }'>
-								<img src="" alt="🍴">
+								<img src="images/ken/fork.svg" alt="🍴">
 								<p>フォーク</p>
 							</label>
 						</dd>
@@ -572,12 +572,12 @@ get_header();
 						<dd class='checkbox'>
 							<input type="checkbox" name="atm" id="atm" v-model="panel.query.convenience.atm">
 							<label for="atm" :class='{ active : panel.query.convenience.atm == true }'>
-								<img src="" alt="💩">
+								<img src="images/ken/atm.svg" alt="💩">
 								<p>ATM</p>
 							</label>
 							<input type="checkbox" name="eatin" id="eatin" v-model="panel.query.convenience.eatin">
 							<label for="eatin" :class='{ active : panel.query.convenience.eatin == true }'>
-								<img src="" alt="💩">
+								<img src="images/ken/lunch.svg" alt="💩">
 								<p>イートイン</p>
 							</label>
 						</dd>
@@ -666,19 +666,19 @@ get_header();
 						<div
 						v-if='thePostData.acf.metas.orderstyle == "0:食券式"'
 						class='active'>
-							<img src="" alt="🎫">
+							<img src="images/ken/ticket.svg" alt="🎫">
 							<p>食券式</p>
 						</div>
 						<div
 						v-if='thePostData.acf.metas.orderstyle == "1:オーダー式"'
 						class='active'>
-							<img src="" alt="👩">
+							<img src="images/ken/order.svg" alt="👩">
 							<p>オーダー式</p>
 						</div>
 
 						<div
 						:class='{ active : thePostData.acf.metas.payment == true }'>
-							<img src="" alt="💳">
+							<img src="images/ken/ic.svg" alt="💳">
 							<p>Suica</p>
 						</div>
 					</dd>
@@ -699,11 +699,11 @@ get_header();
 					<dt>道具</dt>
 					<dd class='icon'>
 						<div :class='{ active : thePostData.acf.metas.tool[0] == "spoon" }'>
-							<img src="" alt="🍴">
+							<img src="images/ken/spoon.svg" alt="🍴">
 							<p>スプーン</p>
 						</div>
 						<div :class='{ active : thePostData.acf.metas.tool[0] == "folk" }'>
-							<img src="" alt="🍴">
+							<img src="images/ken/fork.svg" alt="🍴">
 							<p>フォーク</p>
 						</div>
 					</dd>
@@ -790,7 +790,7 @@ get_header();
 <!--このページ固有のScript-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
 <script src="js/vue-google-maps.js"></script>
-<script><?php include('js/index.js.php');?></script>
+<script><?php include('js/index.js');?></script>
 <link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP&display=swap" rel="stylesheet"> 
 
 <?php wp_footer(); ?>

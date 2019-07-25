@@ -170,18 +170,23 @@ new Vue({
                 //ジャンルごとに色を変える処理
                 case 'restroom':
                     document.documentElement.style.setProperty('--genreColor','#3DBFFF');
+                    document.documentElement.style.setProperty('--genreColorRotate','200deg');
                 break;
                 case 'food':
                     document.documentElement.style.setProperty('--genreColor','#E8A02B');
+                    document.documentElement.style.setProperty('--genreColorRotate','200deg');
                 break;
                 case 'convenience':
                     document.documentElement.style.setProperty('--genreColor','#7AC157');
+                    document.documentElement.style.setProperty('--genreColorRotate','-100deg');
                 break;
                 case 'amusement':
                     document.documentElement.style.setProperty('--genreColor','#AFC429');
+                    document.documentElement.style.setProperty('--genreColorRotate','200deg');
                 break;
                 case 'all':
                     document.documentElement.style.setProperty('--genreColor','#707070');
+                    document.documentElement.style.setProperty('--genreColorRotate','200deg');
                 break;
             }
 
