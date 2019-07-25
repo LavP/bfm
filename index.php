@@ -414,7 +414,7 @@ get_header();
 					</div>
 					<div>
 						<dt>食のジャンル</dt>
-						<dd class='toggle'>
+						<dd class='toggle this'>
 							<?php
 							$api_query = new WP_Query(
 								array(

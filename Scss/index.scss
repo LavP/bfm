@@ -219,6 +219,12 @@ body{
                         color: white;
                         background: var(--genreColor);
                     }
+                    img{
+
+                    }
+                    p{
+                        text-align: center;
+                    }
                 }
             }
         }
@@ -393,6 +399,12 @@ body{
                         &.toggle{
                             display: flex;
                             justify-content: space-around;
+                            &.this{
+                                justify-content: space-between;
+                                &:not(:last-child){
+                                    margin-bottom: 0em;
+                                }
+                            }
                             input{
                                 display: none;
                             }
@@ -402,13 +414,16 @@ body{
                                 padding: 0.7em 1em;
                                 border: 1px solid gray;
                                 margin: 1em 0;
-                                &:not(:last-child){
-                                    margin-bottom: 0.8em;
-                                }
                                 &.active{
                                     color: white;
                                     background: var(--genreColor);
                                     border: 1px solid var(--genreColor);
+                                }
+                                img{
+
+                                }
+                                p{
+                                    text-align: center;
                                 }
                             }
                         }
