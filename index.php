@@ -24,7 +24,6 @@ get_header();
     <!--共通CSS-->
     <style>
         <?php include('style/reset.css');?>
-		<?php include('style/global.min.css');?>
 		<?php include('style/index.min.css');?>
 		<?php include('style/googlefonts.css');?>
     </style>
