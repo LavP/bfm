@@ -136,21 +136,21 @@ get_header();
 		<div id='tutorial_02' v-show='tutorial == 1 && tutorial_num == 2'>
 			<div>
 				<button><img src="images/close.svg" alt="✖" @click='tutorial_num = null'></button>
-				<span class="no">1</span>
+				<span class="no">1</span><span class='tukaikata'>使い方</span>
 				<p>まず、あなたの車椅子について教えて下さい。あなたにぴったりな施設が表示されるようになります。</p>
 			</div>
 		</div>
 		<div id='tutorial_03' v-show='tutorial == 1 && tutorial_num == 3'>
 			<div>
 				<button><img src="images/close.svg" alt="✖" @click='tutorial_num = null'></button>
-				<span class="no">2</span>
+				<span class="no">2</span><span class='tukaikata'>使い方</span>
 				<p>探したいジャンルを選びます。</p>
 			</div>
 		</div>
 		<div id='tutorial_04' v-show='tutorial == 1 && tutorial_num == 4'>
 			<div>
 				<button><img src="images/close.svg" alt="✖" @click='[tutorial_num = null,tutorial = 0]'></button>
-				<span class="no">3</span>
+				<span class="no">3</span><span class='tukaikata'>使い方</span>
 				<p>検索結果が表示されます。<br>気になるお店をクリックしましょう。</p>
 				<p><img src="images/setting.svg" alt="⚙">で条件を絞り込めます。</p>
 			</div>
@@ -187,7 +187,8 @@ get_header();
 			]'><img src="images/diside.svg" alt="✅"></button>
 		</header>
 		<dl>
-			<dt>車椅子の横幅</dt>
+			<dt class="yyheight">車椅子の横幅を<br>
+				教えてください</dt>
 			<dd class='range'>
 				<span>{{panel.query.well.min_width}}m</span>
 				<input 
@@ -198,7 +199,7 @@ get_header();
 				min="0.5" max="1.5" step="0.1">
 				
 			</dd>
-			<dt class="yyheight">どれくらいの高さまで<br>自力でこえられるか</dt>
+			<dt class="yyheight">どれくらいの高さまで<br>自力でこえられるか<br>教えてください</dt>
 			<dd class='range'>
 				<span>{{panel.query.well.max_height}}cm</span>
 				<input 
@@ -208,7 +209,7 @@ get_header();
 				v-model='panel.query.well.max_height'
 				min="0" max="20" step="1">
 			</dd>
-			<dt>車椅子の種類</dt>
+			<dt class="yyheight">車椅子の種類を<br>教えてください</dt>
 			<dd class='toggle'>
 				<input 
 				type="radio" 
@@ -613,6 +614,11 @@ get_header();
 		<!--情報エリア-->
 		<section class="shisetsuArea" v-show='panel.activeInfoPanel == "shisetsu"'>
 			<dl>
+				<div v-if='thePostData.acf.info.name == "辛っとろ麻婆麺 あかずきん"'>
+					<div class="frame-wrapper__video">
+					<iframe width="560" height="315" src="https://www.youtube.com/embed/Sebs7UPmcrQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+					</div>
+				</div>
 				<div v-if='
 				thePostData.type == "restroom"'>
 			    	<dt>便座横のバーは収納できるか</dt>
@@ -758,8 +764,8 @@ get_header();
 					<dd class='range'>
 						<!--<div class='starArea' v-html='star(thePostData.acf.setubi.sekkyaku)'></div>-->
 						<p v-if='thePostData.acf.setubi.sekkyaku = 0'>全然ダメ</p>
-						<p v-else-if='thePostData.acf.setubi.sekkyaku = 1'>優しくない</p>
-						<p v-else-if='thePostData.acf.setubi.sekkyaku = 2'>やや優しくない</p>
+						<p v-else-if='thePostData.acf.setubi.sekkyaku = 1'>気難しい</p>
+						<p v-else-if='thePostData.acf.setubi.sekkyaku = 2'>やや優しい</p>
 						<p v-else-if='thePostData.acf.setubi.sekkyaku== 3'>普通</p>
 						<p v-else-if='thePostData.acf.setubi.sekkyaku = 4'>優しい</p>
 						<p v-else-if='thePostData.acf.setubi.sekkyaku = 5'>すごく優しい</p>
