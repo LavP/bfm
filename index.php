@@ -4,7 +4,7 @@ session_start();
 Template name:トップページ
 */
 if(!isset($_SESSION['come']) || $_GET['t'] == 1){
-	$_SESSION['come'] = true;
+	$_SESSION['come'] = 'set';
 	$tutorial = 1;
 	//echo "チュートリアルは 有効 です。";
 }else{
@@ -31,7 +31,6 @@ get_header();
 		<google-map
 		:center="center"
 		:zoom="mapZoom"
-		:gestureHandling="none"
 		:options="{
 			zoomControl: false,
 			mapTypeControl: false,
@@ -117,7 +116,7 @@ get_header();
 				<button @click='[
 					panel.activeGlobalPanel = "global-setting",
 					tutorial_num = 2
-				]'>つかう</button>
+				]'>つかってみる</button>
 			</div>
 		</div>
 		<div id='tutorial_02' v-show='tutorial == 1 && tutorial_num == 2'>
@@ -786,8 +785,9 @@ get_header();
 	</section>
 </main>
 
-<?php get_footer()?>
 <!--このページ固有のScript-->
+<script><?php include('js/vue.js');?></script>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
 <script src="js/vue-google-maps.js"></script>
 <script><?php include('js/index.js');?></script>

@@ -228,7 +228,7 @@ new Vue({
             return rhtml;
         },
         removeWidth:function(){
-            console.log('resized');
+            //console.log('resized');
             const target = document.querySelectorAll('.hasPhoto > div');
             for(let i = 0;i < target.length;i++){
                 target[i].setAttribute('style','');
