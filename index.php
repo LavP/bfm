@@ -615,7 +615,7 @@ get_header();
 			<dl>
 				<div v-if='thePostData.acf.info.name == "辛っとろ麻婆麺 あかずきん"'>
 					<div class="frame-wrapper__video">
-					<iframe width="560" height="315" src="https://www.youtube.com/embed/Sebs7UPmcrQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+					<iframe width="560" height="315" src="https://www.youtube.com/embed/xEHuSErvUVQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 					</div>
 				</div>
 				<div v-if='
@@ -697,7 +697,8 @@ get_header();
 						:class='{ active : thePostData.acf.metas.payment == true }'>
 							<img src="images/ken/ic.svg" alt="💳">
 							<!--//<p>Suica</p>-->
-							<p>電子マネー使える</p>
+							<p v-if='thePostData.acf.metas.payment == true'>電子マネー使える</p>
+							<p v-if='thePostData.acf.metas.payment == false'>電子マネー使えない</p>
 						</div>
 					</dd>
 				</div>
@@ -710,10 +711,10 @@ get_header();
 						<div v-else-if='thePostData.acf.metas.smile = 1'>普通に笑う</div>
 						<div v-else-if='thePostData.acf.metas.smile = 2'>にこにこ</div>
 						<div v-else='thePostData.acf.metas.smile = 3'>笑顔満開</div>-->
-						<div v-if='thePostData.acf.metas.smile = 0'><img src="images/ken/face3.svg" alt="むすっと"><p>むすっと</p></div>
-						<div v-else-if='thePostData.acf.metas.smile = 1'><img src="images/ken/face2.svg" alt="普通に笑う"><p>普通に笑う</p></div>
-						<div v-else-if='thePostData.acf.metas.smile = 2'><img src="images/ken/face1.svg" alt="にこにこ"><p>にこにこ</p></div>
-						<div v-else='thePostData.acf.metas.smile = 3'><img src="images/ken/face1.svg" alt="笑顔満開"><p>笑顔満開</p></div>
+						<div :class='{ active : thePostData.acf.metas.smile == 0}'><img src="images/ken/face3.svg" alt="むすっと"><p>むすっと</p></div>
+						<div :class='{ active : thePostData.acf.metas.smile == 1}'><img src="images/ken/face2.svg" alt="普通に笑う"><p>普通に笑う</p></div>
+						<div :class='{ active : thePostData.acf.metas.smile == 2}'><img src="images/ken/face1.svg" alt="にこにこ"><p>にこにこ</p></div>
+						<div :class='{ active : thePostData.acf.metas.smile == 3}'><img src="images/ken/face1.svg" alt="笑顔満開"><p>笑顔満開</p></div>
 					</dd>
 				</div>
 				<div v-if='

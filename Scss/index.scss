@@ -184,6 +184,10 @@ body{
         text-align: center;
         margin: 2em auto;
         color: #535353;
+        overflow-y: scroll;
+        @include pc{
+            height: 82%;
+        }
         dt{
             margin-bottom: 1em;
             font-weight: bold;
@@ -205,11 +209,13 @@ body{
                     min-width: 120px;
                     max-width: 100%;
                     background: var(--genreColor);
-                    margin-bottom: 1em;
+                    margin-bottom: 2em;
                     color: white;
                     text-align: center;
                     border-radius: 4px;
                     color: white;
+                    margin: initial auto;
+                    
                     &::before{
                         content: "";
                         position: absolute;
@@ -427,6 +433,7 @@ body{
                         display: flex;
                         flex-wrap: wrap;
                         padding: 1em 0;
+                        justify-content: center;
                         &.toggle{
                             display: flex;
                             justify-content: space-around;
@@ -470,10 +477,12 @@ body{
                                 min-width: 120px;
                                 max-width: 100%;
                                 background: var(--genreColor);
-                                margin-bottom: 0.5em;
+                                margin-bottom: 2em;
                                 text-align: center;
                                 border-radius: 4px;
                                 color: white;
+                                margin: initial auto;
+                                justify-content: center;
                                 &::before{
                                     content: "";
                                     position: absolute;
@@ -591,6 +600,9 @@ body{
                         }
                     }
                     &.range{
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
                         input{
                             width: 100%;
                         }
@@ -599,9 +611,9 @@ body{
                             position: relative;
                             padding: 7px 10px;
                             min-width: 120px;
-                            max-width: 100%;
+                            max-width: 50%;
                             background: var(--genreColor);
-                            margin-bottom: 1em;
+                            margin-bottom: 2em;
                             text-align: center;
                             border-radius: 4px;
                             color: white;
@@ -641,6 +653,7 @@ body{
                     &.link{
                         line-height: 1.5;
                         text-align: justify;
+                        word-break: break-word;
                         a{
                             text-decoration: none;
                             color: #535353;
