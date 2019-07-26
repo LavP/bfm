@@ -192,7 +192,7 @@ new Vue({
 
             settingQuery = this.makeQuery(this.panel.query.well);
 
-            console.log('https://kamata-bfm.nextlav.xyz/data-api/?type='+this.panel.activeGenre+settingQuery+'&o='+this.panel.query.o[this.panel.activeGenre]+optionQuery);
+            //console.log('https://kamata-bfm.nextlav.xyz/data-api/?type='+this.panel.activeGenre+settingQuery+'&o='+this.panel.query.o[this.panel.activeGenre]+optionQuery);
             //取得
             axios
             .get('https://kamata-bfm.nextlav.xyz/data-api/?type='+this.panel.activeGenre+settingQuery+'&o='+this.panel.query.o[this.panel.activeGenre]+optionQuery)
@@ -208,7 +208,7 @@ new Vue({
         star:function(get){
             get = Number(get);
             //get = 4;
-            console.log(get);
+            //console.log(get);
             var kuro = Math.floor(get/1);
             var han = get%1;
             var hosibox = [];
